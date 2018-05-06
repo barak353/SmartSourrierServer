@@ -14,7 +14,8 @@ import javax.persistence.*;
 public class Delivery implements Serializable {
 
 	@Id
-	private String id;
+	@GeneratedValue 
+	private Long id;
 	private String address;
 	private String preferredArea;
 	private String price;
@@ -30,11 +31,11 @@ public class Delivery implements Serializable {
 	public Delivery() {
 		super();
 	}   
-	public String getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}   
 	public String getAddress() {

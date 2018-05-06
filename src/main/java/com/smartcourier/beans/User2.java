@@ -9,9 +9,8 @@ import javax.persistence.*;
  * Entity implementation class for Entity: User
  *
  */
-@Entity
 
-public class User implements Serializable {
+public class User2 {
 
 	@Id
 	@GeneratedValue
@@ -21,12 +20,12 @@ public class User implements Serializable {
 	
 	private String password;
 	
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+/*	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "agent_id")
 	private Agent agent;
 	private static final long serialVersionUID = 1L;
-
-	public User() {
+*/
+	public User2() {
 		super();
 	}   
 	
@@ -52,12 +51,12 @@ public class User implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}   
-	public Agent getAgent() {
+	/*public Agent getAgent() {
 		return this.agent;
 	}
 
 	public void setAgent(Agent agent) {
 		this.agent = agent;
-	}
+	}*/
    
 }

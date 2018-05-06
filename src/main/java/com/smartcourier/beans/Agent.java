@@ -1,11 +1,11 @@
 package com.smartcourier.beans;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -20,7 +20,9 @@ public class Agent implements Serializable {
 
 	   
 	@Id
-	private String id;
+	@GeneratedValue
+	private Long id;
+	
 	private String email;
 	private String phone;
 	private String po;
@@ -36,11 +38,11 @@ public class Agent implements Serializable {
 	public Agent() {
 		super();
 	}   
-	public String getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}   
 	public String getEmail() {
