@@ -1,4 +1,4 @@
-package com.gabor.usermanagment.beans;
+package com.smartcourier.beans;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

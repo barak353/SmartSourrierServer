@@ -1,9 +1,14 @@
-package com.gabor.usermanagment.beans;
+package com.smartcourier.beans;
 
 import java.io.Serializable;
-import java.lang.String;
 import java.util.ArrayList;
-import javax.persistence.*;
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  * Entity implementation class for Entity: Agent
@@ -15,22 +20,28 @@ public class Agent implements Serializable {
 
 	   
 	@Id
-	private String did;
+	private String id;
 	private String email;
 	private String phone;
 	private String po;
-	private ArrayList<Delivery> delivery;
+	
+	@OneToOne(mappedBy = "agent", fetch = FetchType.LAZY)
+	private User user;
+	
+	@OneToMany(mappedBy="agent")
+	private List<Delivery> delivery;
+	
 	private static final long serialVersionUID = 1L;
 
 	public Agent() {
 		super();
 	}   
-	public String getDid() {
-		return this.did;
+	public String getId() {
+		return this.id;
 	}
 
-	public void setDid(String did) {
-		this.did = did;
+	public void setId(String id) {
+		this.id = id;
 	}   
 	public String getEmail() {
 		return this.email;
@@ -53,11 +64,11 @@ public class Agent implements Serializable {
 	public void setPo(String po) {
 		this.po = po;
 	}   
-	public ArrayList<Delivery> getDelivery() {
+	public List<Delivery> getDelivery() {
 		return this.delivery;
 	}
 
-	public void setDelivery(ArrayList<Delivery> delivery) {
+	public void setDelivery(List<Delivery> delivery) {
 		this.delivery = delivery;
 	}
    

@@ -1,5 +1,5 @@
-//import com.gabor.usermanagment.beans.Customer;
-//import com.gabor.usermanagment.dao.CustomerDao;
+//import com.smartcourier.beans.Customer;
+//import com.smartcourier.dao.CustomerDao;
 //
 //public class tester {
 //

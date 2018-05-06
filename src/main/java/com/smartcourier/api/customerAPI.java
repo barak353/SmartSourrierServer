@@ -1,4 +1,4 @@
-package com.gabor.usermanagment.api;
+package com.smartcourier.api;
 
 import java.util.List;
 
@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gabor.usermanagment.beans.Customer;
-import com.gabor.usermanagment.dao.CustomerDao;
+import com.smartcourier.beans.Customer;
+import com.smartcourier.dao.CustomerDao;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

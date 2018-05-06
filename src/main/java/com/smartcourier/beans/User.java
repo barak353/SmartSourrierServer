@@ -1,6 +1,6 @@
-package com.gabor.usermanagment.beans;
+package com.smartcourier.beans;
 
-import com.gabor.usermanagment.beans.Agent;
+import com.smartcourier.beans.Agent;
 import java.io.Serializable;
 import java.lang.String;
 import javax.persistence.*;
@@ -16,6 +16,9 @@ public class User implements Serializable {
 	@Id
 	private String id;
 	private String password;
+	
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "agent_id")
 	private Agent agent;
 	private static final long serialVersionUID = 1L;
 

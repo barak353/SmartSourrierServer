@@ -1,4 +1,4 @@
-package com.gabor.usermanagment.beans;
+package com.smartcourier.beans;
 
 import java.io.Serializable;
 import java.lang.String;
@@ -14,23 +14,28 @@ import javax.persistence.*;
 public class Delivery implements Serializable {
 
 	@Id
-	private String did;
+	private String id;
 	private String address;
 	private String preferredArea;
 	private String price;
 	private String state;
 	private String phone;
+	
+	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+  	@PrimaryKeyJoinColumn
+	private Agent agent;
+	
 	private static final long serialVersionUID = 1L;
 
 	public Delivery() {
 		super();
 	}   
-	public String getDid() {
-		return this.did;
+	public String getId() {
+		return this.id;
 	}
 
-	public void setDid(String did) {
-		this.did = did;
+	public void setId(String id) {
+		this.id = id;
 	}   
 	public String getAddress() {
 		return this.address;

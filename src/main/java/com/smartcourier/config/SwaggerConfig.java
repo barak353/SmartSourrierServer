@@ -1,4 +1,4 @@
-package com.gabor.usermanagment.configs;
+package com.smartcourier.config;
 
 
 import org.springframework.context.annotation.Bean;
@@ -18,7 +18,7 @@ public class SwaggerConfig {
 	    public Docket productApi() {
 	        return new Docket(DocumentationType.SWAGGER_2)
 	                .select()
-	                .apis(RequestHandlerSelectors.basePackage("com.gabor.usermanagment.api"))
+	                .apis(RequestHandlerSelectors.basePackage("com.smartcourier.api"))
 	                .paths(regex("/customerapi.*"))
 	                .build()
 	                .apiInfo(metaData());
