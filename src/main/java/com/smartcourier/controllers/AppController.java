@@ -1,53 +1,40 @@
 package com.smartcourier.controllers;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.smartcourier.beans.User;
-import com.smartcourier.dao.AbstractDbService;
-import com.smartcourier.dao.AgentDao;
-import com.smartcourier.dao.UserDao;
+import com.smartcourier.dao.AppDao;
 import com.smartcourier.model.LoginIn;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping(path = "/app", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/app")
 @Api(value="usermanagment")
 public class AppController {
 
 	public static final Logger logger = LoggerFactory.getLogger(AppController.class);
 
 	@Autowired
-	UserDao userDao;
-	
-	@Autowired
-	AgentDao agentDao;
-	
-	@Autowired
-	private AbstractDbService abstractDbService;
+	AppDao appDao;
 
-	/*@ApiOperation(value="View a list of customers", response= Iterable.class)
-	@ApiResponses(value= {
-			@ApiResponse(code = 200, message = "Successfully received the list from database"),
-			@ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-			@ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-			@ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
-	}
-			)*/
-	
-	
 	@ApiOperation(value="login", response= Iterable.class)
 	@PostMapping("/login")
 	public Boolean login(@RequestBody LoginIn loginIn) {
-		User user= userDao.findByUsername(loginIn.getUsername());
+		User user= appDao.findByUsername(loginIn.getUsername());
 		if(user == null) {
 			return false;
 		}
@@ -59,12 +46,37 @@ public class AppController {
 		return true;
 	}
 	
-	@ApiOperation(value="Create a user", response= Iterable.class)
+	@ApiOperation(value="Get user", response= Iterable.class)
+	@GetMapping("/user/{username}")
+	public User getUser(@PathVariable(value = "username") String username) {
+		return appDao.findByUsername(username);
+	}
+	
+	@GetMapping("/getAllUsers")
+	public List<User> getAllUsers(){
+		return appDao.findAll();
+	}
+	
+	@ApiOperation(value="Create user", response= Iterable.class)
 	@PostMapping("/createuser")
-	public Boolean createuser(@RequestBody User user) {
-		//agentDao.save(user.getAgent());
-		//return userDao.save(user);
-		return abstractDbService.add(user/*, user.getUsername()*/);
+	public User createUser(@RequestBody User user) {
+		if(appDao.findByUsername(user.getUsername()) == null){
+			return appDao.save(user);
+		} else{
+			return null;
+		}
+	}
+	
+	@ApiOperation(value="Delete user", response= Iterable.class)
+	@DeleteMapping("/deleteuser")
+	public User deleteUser(@RequestBody User user) {
+		return appDao.save(user);
+	}
+	
+	@ApiOperation(value="Update user", response= Iterable.class)
+	@PutMapping("/updateuser")
+	public User updateUser(@RequestBody User user) {
+		return appDao.save(user);
 	}
 	
 	

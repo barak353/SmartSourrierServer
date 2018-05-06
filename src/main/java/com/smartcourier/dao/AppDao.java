@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.smartcourier.beans.User;
 
 @Repository
-public interface UserDao extends JpaRepository<User, Long>{
+public interface AppDao extends JpaRepository<User, Long>{
 	
 	public User findByUsername(String username);
 	
