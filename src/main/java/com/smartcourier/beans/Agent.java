@@ -3,12 +3,14 @@ package com.smartcourier.beans;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 
 /**
  * Entity implementation class for Entity: Agent
@@ -30,7 +32,7 @@ public class Agent implements Serializable {
 	@OneToOne(mappedBy = "agent", fetch = FetchType.LAZY)
 	private User user;
 	
-	@OneToMany(mappedBy="agent")
+	@OneToMany(mappedBy="agent", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	private List<Delivery> delivery;
 	
 	private static final long serialVersionUID = 1L;

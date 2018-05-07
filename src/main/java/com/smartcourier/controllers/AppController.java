@@ -23,7 +23,7 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping(path = "/app")
-@Api(value="usermanagment")
+@Api(value="App Management")
 public class AppController {
 
 	public static final Logger logger = LoggerFactory.getLogger(AppController.class);
@@ -52,13 +52,13 @@ public class AppController {
 		return appDao.findByUsername(username);
 	}
 	
-	@GetMapping("/getAllUsers")
+	@GetMapping("/user/getAll")
 	public List<User> getAllUsers(){
 		return appDao.findAll();
 	}
 	
 	@ApiOperation(value="Create user", response= Iterable.class)
-	@PostMapping("/createuser")
+	@PostMapping("/user/create")
 	public User createUser(@RequestBody User user) {
 		if(appDao.findByUsername(user.getUsername()) == null){
 			return appDao.save(user);
@@ -68,70 +68,28 @@ public class AppController {
 	}
 	
 	@ApiOperation(value="Delete user", response= Iterable.class)
-	@DeleteMapping("/deleteuser")
-	public User deleteUser(@RequestBody User user) {
-		return appDao.save(user);
+	@DeleteMapping("/user/delete/{username}")
+	public Boolean deleteUser(@PathVariable(value = "username") String username) {
+		User user = appDao.findByUsername(username);
+		if(user != null){
+			appDao.delete(user);
+			return true;
+		} else{
+			return false;
+		}
 	}
 	
 	@ApiOperation(value="Update user", response= Iterable.class)
-	@PutMapping("/updateuser")
-	public User updateUser(@RequestBody User user) {
-		return appDao.save(user);
-	}
-	
-	
-	/*
-	
-
-	@GetMapping("/getAll")
-	public List<Customer> getAllCustomers(){
-		return customerDao.findAll();
-	}
-	
-	@ApiOperation(value="Creating a user", response= Iterable.class)
-	@PostMapping("/createCustomer")
-	public Customer createCustomer(@Valid @RequestBody Customer customer) {
-		return customerDao.save(customer);
-	}
-	
-	@ApiOperation(value="Getting customer by ID", response= Iterable.class)
-	@GetMapping("/getCustomerbyID/{customerID}")
-	public ResponseEntity<Customer> getNoteById(@PathVariable(value = "customerID") Long customerID) {
-		Customer customer = customerDao.findOne(customerID);
-		if(customer == null) {
-			return ResponseEntity.notFound().build();
+	@PutMapping("/user/update/{username}")
+	public User updateUser(@PathVariable(value = "username") String username, @RequestBody User user) {
+		User currentUser = appDao.findByUsername(username);
+		if(currentUser != null){
+			appDao.delete(currentUser);
+			return appDao.save(user);
+		} else{
+			return null;
 		}
-		return ResponseEntity.ok().body(customer);
 	}
-	
-	@ApiOperation(value="updating customer by ID", response= Iterable.class)
-	@PutMapping("/updateCustomer/{customerID}")
-	public ResponseEntity<Customer> updateNote(@PathVariable(value = "customerID") Long customerID, 
-			@Valid @RequestBody Customer customerdetails) {
-		Customer customer = customerDao.findOne(customerID);
-		if(customer == null) {
-			return ResponseEntity.notFound().build();
-		}
-		customer.setCustomerAddress(customerdetails.getCustomerAddress());
-		customer.setCustomerName(customerdetails.getCustomerName());
-		customer.setCustomerPhoneNumber(customerdetails.getCustomerPhoneNumber());
-
-		Customer updatedNote = customerDao.save(customer);
-		return ResponseEntity.ok(updatedNote);
-	}
-	
-	@ApiOperation(value="Deleting Customer by ID", response= Iterable.class)
-	@DeleteMapping("/deleteCustomer/{customerID}")
-	public ResponseEntity<Customer> deleteNote(@PathVariable(value = "customerID") Long customerID) {
-		Customer customer = customerDao.findOne(customerID);
-		if(customer == null) {
-			return ResponseEntity.notFound().build();
-		}
-
-		customerDao.delete(customerID);
-		return ResponseEntity.ok().build();
-	}*/
-
 }
 
 
