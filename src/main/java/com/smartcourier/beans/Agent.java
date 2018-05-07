@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -32,7 +33,8 @@ public class Agent implements Serializable {
 	@OneToOne(mappedBy = "agent", fetch = FetchType.LAZY)
 	private User user;
 	
-	@OneToMany(mappedBy="agent", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "agent_id")
 	private List<Delivery> delivery;
 	
 	private static final long serialVersionUID = 1L;
