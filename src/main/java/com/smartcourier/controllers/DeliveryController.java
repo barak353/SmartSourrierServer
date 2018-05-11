@@ -61,7 +61,7 @@ public class DeliveryController {
 	}
 	
 	@ApiOperation(value="Delete delivery", response= Iterable.class)
-	@DeleteMapping("/delete/{deliveryId}")
+	@DeleteMapping("/delete/{agentId}/{deliveryId}")
 	public Boolean deleteDelivery(@PathVariable(value = "agentId") Long agentId, @PathVariable(value = "deliveryId") Long deliveryId) {
 		Agent agent = agentDao.findOne(agentId);
 		if(agent != null){
@@ -72,9 +72,12 @@ public class DeliveryController {
 					break;
 				}
 			}
+			if(deliveryToDelete == null)
+				return false;//Agent dosen't have that delivey.
 			agentDao.delete(agent);
 			agent.getDelivery().remove(deliveryToDelete);
 			agentDao.save(agent);
+			deliveryDao.delete(deliveryToDelete);//We can delete delivery just after we detach the agent from that delivery.
 			return true;
 		} else{
 			return null;
@@ -89,7 +92,7 @@ public class DeliveryController {
 			deliveryDao.delete(currentDelivery);
 			return deliveryDao.save(delivery);
 		} else{
-			return null;
+			return null;//Agent is not exist.
 		}
 	}
 }

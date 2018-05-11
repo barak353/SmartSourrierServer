@@ -42,7 +42,7 @@ public class AgentController {
 		return agentDao.findAll();
 	}
 	
-	/*@ApiOperation(value="Delete agent", response= Iterable.class)
+	@ApiOperation(value="Delete agent", response= Iterable.class)
 	@DeleteMapping("/delete/{agentId}")
 	public Boolean deleteAgent(@PathVariable(value = "agentId") Long agentId) {
 		Agent agent = agentDao.findOne(agentId);
@@ -52,7 +52,8 @@ public class AgentController {
 		} else{
 			return false;
 		}
-	}*/
+	}
+	
 	@ApiOperation(value="Create agent", response= Iterable.class)
 	@PostMapping("/create")
 	public Agent createDelivery(@RequestBody Agent agent) {
