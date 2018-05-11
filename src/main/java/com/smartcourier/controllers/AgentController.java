@@ -53,7 +53,6 @@ public class AgentController {
 			return false;
 		}
 	}*/
-	//added by Barak.
 	@ApiOperation(value="Create agent", response= Iterable.class)
 	@PostMapping("/create")
 	public Agent createDelivery(@RequestBody Agent agent) {
