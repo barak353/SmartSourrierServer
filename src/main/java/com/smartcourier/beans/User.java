@@ -16,9 +16,9 @@ public class User implements Serializable {
 	@Id
 	@GeneratedValue
 	private Long id;
-	
+	private String firstName;
+	private String lastName;
 	private String username;
-	
 	private String password;
 	
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -30,6 +30,22 @@ public class User implements Serializable {
 		super();
 	}   
 	
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
 	public Long getId() {
 		return this.id;
 	}
@@ -37,6 +53,8 @@ public class User implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}   
+	
+	
 	
 	public String getUsername() {
 		return this.username;

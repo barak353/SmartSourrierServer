@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.smartcourier.beans.Agent;
 import com.smartcourier.beans.User;
 import com.smartcourier.dao.AppDao;
 import com.smartcourier.model.LoginIn;
 import com.smartcourier.model.LoginOut;
+import com.smartcourier.model.UserAgentIn;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -74,7 +76,26 @@ public class AppController {
 	
 	@ApiOperation(value="Create user", response= Iterable.class)
 	@PostMapping("/user/create")
-	public User createUser(@RequestBody User user) {
+	public User createUser(@RequestBody UserAgentIn userAgentIn) {
+		User user = null;
+		
+		if(userAgentIn != null){
+			user = new User();
+			user.setUsername(userAgentIn.getUsername());
+			user.setPassword(userAgentIn.getPassword());
+			user.setFirstName(userAgentIn.getFirstName());
+			user.setLastName(userAgentIn.getLastName());
+			if(userAgentIn.getEmail() != null){
+				Agent agent = new Agent();
+				agent.setEmail(userAgentIn.getEmail());
+				agent.setPhone(userAgentIn.getPhone());
+				agent.setPreferredArea(userAgentIn.getPreferredArea());
+				agent.setPo(userAgentIn.getPo());
+				agent.setTotalPaid(userAgentIn.getTotalPaid());
+				user.setAgent(agent);
+			}
+		}
+		
 		if (user != null){
 			String username = user.getUsername();
 			if (username != null)
