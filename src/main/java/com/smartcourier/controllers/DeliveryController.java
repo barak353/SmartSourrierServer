@@ -73,7 +73,7 @@ public class DeliveryController {
 				}
 			}
 			if(deliveryToDelete == null)
-				return false;//Agent dosen't have that delivey.
+				return false;//Agent dosen't have that delivery.
 			agentDao.delete(agent);
 			agent.getDelivery().remove(deliveryToDelete);
 			agentDao.save(agent);

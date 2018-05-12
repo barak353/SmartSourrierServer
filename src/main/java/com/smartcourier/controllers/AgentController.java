@@ -15,8 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.smartcourier.beans.Agent;
-import com.smartcourier.beans.Delivery;
+import com.smartcourier.beans.User;
 import com.smartcourier.dao.AgentDao;
+import com.smartcourier.dao.AppDao;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,6 +29,9 @@ public class AgentController {
 
 	public static final Logger logger = LoggerFactory.getLogger(AgentController.class);
 
+	@Autowired
+	AppDao appDao;
+	
 	@Autowired
 	AgentDao agentDao;
 
@@ -45,6 +49,25 @@ public class AgentController {
 	@ApiOperation(value="Delete agent", response= Iterable.class)
 	@DeleteMapping("/delete/{agentId}")
 	public Boolean deleteAgent(@PathVariable(value = "agentId") Long agentId) {
+		List<User> users = appDao.findAll();
+		for(User user : users){
+			if(user.getAgent().getId().equals(agentId)){
+				appDao.delete(user);
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/*@ApiOperation(value="Delete agent", response= Iterable.class)
+	@DeleteMapping("/delete/{agentId}")
+	public Boolean deleteAgent(@PathVariable(value = "agentId") Long agentId) {
+		List<User> users = appController.getAllUsers();
+		for(User user : users){
+			if(user.getAgent().getId().equals(agentId)){
+				break;
+			}
+		}
 		Agent agent = agentDao.findOne(agentId);
 		if(agent != null){
 			agentDao.delete(agent);
@@ -52,7 +75,7 @@ public class AgentController {
 		} else{
 			return false;
 		}
-	}
+	}*/
 	
 	@ApiOperation(value="Create agent", response= Iterable.class)
 	@PostMapping("/create")

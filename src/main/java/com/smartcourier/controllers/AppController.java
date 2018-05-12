@@ -19,7 +19,6 @@ import com.smartcourier.beans.User;
 import com.smartcourier.dao.AppDao;
 import com.smartcourier.model.LoginIn;
 import com.smartcourier.model.LoginOut;
-import com.smartcourier.model.LoginOut.LoginUser;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,17 +34,17 @@ public class AppController {
 	AppDao appDao;
 
 	@ApiOperation(value="login", response= Iterable.class)
-	@PostMapping("/login")
+	@PostMapping("/authenticate")
 	public LoginOut login(@RequestBody LoginIn loginIn) {
 		String username = loginIn.getUsername().toLowerCase();
 		Boolean success = true;
 		LoginOut loginOut = new LoginOut();
-		User user= appDao.findByUsername(username);
+		User user = appDao.findByUsername(username);
 		if(user != null) {
 			if(user.getPassword().equals(loginIn.getPassword())) {
-				LoginUser loginUser = new LoginUser();
-				loginUser.setToken(UUID.randomUUID().toString());
-				loginOut.setUser(loginUser);
+				loginOut.setId(user.getId());
+				loginOut.setUsername(username);
+				loginOut.setToken(UUID.randomUUID().toString());
 				return loginOut;
 			} else{
 				success = false;
@@ -55,7 +54,7 @@ public class AppController {
 		}
 		
 		if(success == false){
-			loginOut.setErrorMessage("Username or password was incorrect");
+			loginOut.setErrorMessage("Username or password is incorrect");
 		}
 		
 		return loginOut;
