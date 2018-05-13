@@ -51,9 +51,11 @@ public class AgentController {
 	public Boolean deleteAgent(@PathVariable(value = "agentId") Long agentId) {
 		List<User> users = appDao.findAll();
 		for(User user : users){
-			if(user.getAgent().getId().equals(agentId)){
-				appDao.delete(user);
-				return true;
+			if (user.getAgent() != null) {
+				if(user.getAgent().getId().equals(agentId)){
+					appDao.delete(user);
+					return true;
+				}
 			}
 		}
 		return false;
