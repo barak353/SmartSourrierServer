@@ -122,7 +122,44 @@ public class AppController {
 		}
 	}
 	
+	
+	
 	@ApiOperation(value="Update user", response= Iterable.class)
+	@PutMapping("/user/update/{username}")
+	public User updateUser(@RequestBody UserAgentIn userAgentIn) {
+		User user = null;
+		
+		if(userAgentIn != null){
+			user = new User();
+			user.setUsername(userAgentIn.getUsername());
+			user.setPassword(userAgentIn.getPassword());
+			user.setFirstName(userAgentIn.getFirstName());
+			user.setLastName(userAgentIn.getLastName());
+			if(userAgentIn.getEmail() != null){
+				Agent agent = new Agent();
+				agent.setEmail(userAgentIn.getEmail());
+				agent.setPhone(userAgentIn.getPhone());
+				agent.setPreferredArea(userAgentIn.getPreferredArea());
+				agent.setPo(userAgentIn.getPo());
+				agent.setTotalPaid(userAgentIn.getTotalPaid());
+				user.setAgent(agent);
+			}
+		}else
+			return null;
+		
+		if (user != null){
+			String username = user.getUsername();
+			if (username != null)
+				username = username.toLowerCase();
+		}
+		
+		appDao.delete(user);
+		return appDao.save(user);	
+		 
+	}
+	
+	
+	/*@ApiOperation(value="Update user", response= Iterable.class)
 	@PutMapping("/user/update/{username}")
 	public User updateUser(@PathVariable(value = "username") String username, @RequestBody User user) {
 		username = username.toLowerCase();
@@ -134,7 +171,7 @@ public class AppController {
 		} else{
 			return null;
 		}
-	}
+	}*/
 }
 
 
