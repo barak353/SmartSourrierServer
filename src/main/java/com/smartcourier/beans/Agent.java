@@ -38,6 +38,10 @@ public class Agent implements Serializable {
 	@JoinColumn(name = "agent_id")
 	private List<Delivery> delivery;
 	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "agent_id")
+	private List<Salary> salary;
+	
 	private static final long serialVersionUID = 1L;
 
 	public Agent() {
@@ -93,5 +97,19 @@ public class Agent implements Serializable {
 	public void setDelivery(List<Delivery> delivery) {
 		this.delivery = delivery;
 	}
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
+	public List<Salary> getSalary() {
+		return salary;
+	}
+	public void setSalary(List<Salary> salary) {
+		this.salary = salary;
+	}
+	
+	
    
 }
