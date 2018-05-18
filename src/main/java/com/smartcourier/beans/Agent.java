@@ -2,7 +2,6 @@ package com.smartcourier.beans;
 
 import java.io.Serializable;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -25,33 +24,28 @@ public class Agent implements Serializable {
 	@Id
 	@GeneratedValue
 	private Long id;
-	
 	private String email;
 	private String phone;
 	private String preferredArea;
 	private String po;
-	private String totalPaid;
-
-	
-	public String getTotalPaid() {
-		return totalPaid;
-	}
-	public void setTotalPaid(String totalPaid) {
-		this.totalPaid = totalPaid;
-	}
 
 	@OneToOne(mappedBy = "agent", fetch = FetchType.LAZY)
 	private User user;
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "agent_id")
 	private List<Delivery> delivery;
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "agent_id")
+	private List<Salary> salary;
 	
 	private static final long serialVersionUID = 1L;
 
 	public Agent() {
 		super();
-	}   
+	}  
+	 
 	public Long getId() {
 		return this.id;
 	}
@@ -95,5 +89,12 @@ public class Agent implements Serializable {
 	public void setDelivery(List<Delivery> delivery) {
 		this.delivery = delivery;
 	}
-   
+	
+	public List<Salary> getSalary() {
+		return salary;
+	}
+	
+	public void setSalary(List<Salary> salary) {
+		this.salary = salary;
+	}
 }

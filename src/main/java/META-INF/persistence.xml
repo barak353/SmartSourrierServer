@@ -4,5 +4,6 @@
 		<class>com.smartcourier.beans.User</class>
 		<class>com.smartcourier.beans.Delivery</class>
 		<class>com.smartcourier.beans.Agent</class>
+		<class>com.smartcourier.beans.Salary</class>
 	</persistence-unit>
 </persistence>

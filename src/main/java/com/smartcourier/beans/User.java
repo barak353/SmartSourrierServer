@@ -22,6 +22,15 @@ public class User implements Serializable {
 	private String firstName;
 	private String lastName;
 	
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "agent_id")
+	private Agent agent;
+	private static final long serialVersionUID = 1L;
+	
+	public User() {
+		super();
+	} 
+	
 	public String getFirstName() {
 		return firstName;
 	}
@@ -37,15 +46,6 @@ public class User implements Serializable {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name = "agent_id")
-	private Agent agent;
-	private static final long serialVersionUID = 1L;
-
-	public User() {
-		super();
-	}   
 	
 	public Long getId() {
 		return this.id;
