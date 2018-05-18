@@ -17,7 +17,6 @@ public class Delivery implements Serializable {
 	@GeneratedValue 
 	private Long id;
 	private String address;
-	private String preferredArea;
 	private String price;
 	private String state;
 	private String phone;
@@ -45,13 +44,7 @@ public class Delivery implements Serializable {
 	public void setAddress(String address) {
 		this.address = address;
 	}   
-	public String getPreferredArea() {
-		return this.preferredArea;
-	}
 
-	public void setPreferredArea(String preferredArea) {
-		this.preferredArea = preferredArea;
-	}   
 	public String getPrice() {
 		return this.price;
 	}

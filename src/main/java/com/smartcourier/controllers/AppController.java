@@ -69,7 +69,8 @@ public class AppController {
 	
 	@GetMapping("/user/getAll")
 	public List<User> getAllUsers(){
-		return appDao.findAll();
+		 List<User> useres = appDao.findAll();
+		return useres;
 	}
 	
 	@ApiOperation(value="Create user", response= Iterable.class)

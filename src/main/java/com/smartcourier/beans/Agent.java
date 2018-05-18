@@ -28,8 +28,18 @@ public class Agent implements Serializable {
 	
 	private String email;
 	private String phone;
+	private String preferredArea;
 	private String po;
+	private String totalPaid;
+
 	
+	public String getTotalPaid() {
+		return totalPaid;
+	}
+	public void setTotalPaid(String totalPaid) {
+		this.totalPaid = totalPaid;
+	}
+
 	@OneToOne(mappedBy = "agent", fetch = FetchType.LAZY)
 	private User user;
 	
@@ -63,6 +73,14 @@ public class Agent implements Serializable {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}   
+	
+	public String getPreferredArea() {
+	    return preferredArea;
+	}
+	public void setPreferredArea(String preferredArea) {
+	    this.preferredArea = preferredArea;
+	}
+	
 	public String getPo() {
 		return this.po;
 	}
