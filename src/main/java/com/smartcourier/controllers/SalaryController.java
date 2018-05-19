@@ -46,6 +46,7 @@ public class SalaryController {
 			    if (salaryIt.getMonthInYear().equals(salary.getMonthInYear())) {//if monthInYear already exist in agent's salaries list.
 			        // Remove the current element from the iterator and the list.
 			        iterator.remove();
+					salaryDao.delete(salaryIt);
 			    }
 			}
 			agentDao.delete(agent);
