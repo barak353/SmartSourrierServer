@@ -50,7 +50,6 @@ public class SalaryController {
 					salaryDao.delete(salaryIt);
 			    }
 			}
-			salary.setIdAgent(agentId);
 			agentDao.delete(agent);
 			agent.getSalary().add(salary);
 			agentDao.save(agent);
