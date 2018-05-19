@@ -8,7 +8,12 @@ import javax.persistence.*;
  *
  */
 @Entity
-@Table(name="Salary")
+@Table(
+        name="SALARY", 
+        uniqueConstraints=
+            @UniqueConstraint(columnNames={"agent_id", "monthInYear"})
+    )
+
 
 public class Salary implements Serializable {
 

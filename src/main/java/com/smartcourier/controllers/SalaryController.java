@@ -1,5 +1,6 @@
 package com.smartcourier.controllers;
 
+import java.util.Iterator;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +41,13 @@ public class SalaryController {
 	public Salary createSalary(@PathVariable(value = "agentId") Long agentId, @RequestBody Salary salary) {
 		Agent agent = agentDao.findOne(agentId);
 		if(agent != null){
+			for (Iterator<Salary> iterator = agent.getSalary().iterator(); iterator.hasNext();) {
+			    Salary salaryIt = iterator.next();
+			    if (salaryIt.getMonthInYear().equals(salary.getMonthInYear())) {//if monthInYear already exist in agent's salaries list.
+			        // Remove the current element from the iterator and the list.
+			        iterator.remove();
+			    }
+			}
 			agentDao.delete(agent);
 			agent.getSalary().add(salary);
 			agentDao.save(agent);
