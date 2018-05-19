@@ -50,9 +50,11 @@ public class SalaryController {
 					salaryDao.delete(salaryIt);
 			    }
 			}
+			salary.setIdAgent(agentId);
 			agentDao.delete(agent);
 			agent.getSalary().add(salary);
 			agentDao.save(agent);
+			
 			return salary;
 		} else{
 			return null;
@@ -61,7 +63,7 @@ public class SalaryController {
 	
 	@ApiOperation(value="Get delivery", response= Iterable.class)
 	@GetMapping("/getByMonthInYear/{monthInYear}")
-	public List<Salary> getDeliveryById(@PathVariable(value = "monthInYear") String monthInYear) {
+	public List<Salary> getSalaryByMonthInYear(@PathVariable(value = "monthInYear") String monthInYear) {
 		List<Salary> salaries = salaryDao.findByMonthInYear(monthInYear);
 		return salaries;
 	}
