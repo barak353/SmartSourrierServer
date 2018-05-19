@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.smartcourier.beans.Agent;
+import com.smartcourier.beans.Delivery;
 import com.smartcourier.beans.Salary;
 import com.smartcourier.dao.AgentDao;
 import com.smartcourier.dao.SalaryDao;
@@ -56,6 +57,13 @@ public class SalaryController {
 		} else{
 			return null;
 		}
+	}
+	
+	@ApiOperation(value="Get delivery", response= Iterable.class)
+	@GetMapping("/getByMonthInYear/{monthInYear}")
+	public List<Salary> getDeliveryById(@PathVariable(value = "monthInYear") String monthInYear) {
+		List<Salary> salaries = salaryDao.findByMonthInYear(monthInYear);
+		return salaries;
 	}
 	
 }
