@@ -8,6 +8,7 @@ import javax.persistence.*;
  *
  */
 @Entity
+@Table(name="Salary")
 
 public class Salary implements Serializable {
 
@@ -27,6 +28,14 @@ public class Salary implements Serializable {
 		super();
 	}
 	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
 	public String getMonthInYear() {
 		return monthInYear;
 	}
@@ -41,22 +50,6 @@ public class Salary implements Serializable {
 
 	public void setTotalPaid(String totalPaid) {
 		this.totalPaid = totalPaid;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Agent getAgent() {
-		return agent;
-	}
-
-	public void setAgent(Agent agent) {
-		this.agent = agent;
 	}
    
 }

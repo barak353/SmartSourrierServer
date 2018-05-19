@@ -37,7 +37,7 @@ public class Agent implements Serializable {
 	private List<Delivery> delivery;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "agent_id")
+    @JoinColumn(name = "salary_id")
 	private List<Salary> salary;
 	
 	private static final long serialVersionUID = 1L;
