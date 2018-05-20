@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -67,6 +68,18 @@ public class SalaryController {
 		return salaries;
 	}
 	
+	
+/*	@ApiOperation(value="Update salary", response= Iterable.class)
+	@PutMapping("/update/{salaryId}")
+	public Delivery updateDelivery(@PathVariable(value = "deliveryId") Long salaryId, @RequestBody Salary salary) {
+		Delivery currentDelivery = salaryDao.findOne(salaryId);
+		if(currentDelivery != null){
+			deliveryDao.delete(currentDelivery);
+			return deliveryDao.save(delivery);
+		} else{
+			return null;//Agent is not exist.
+		}
+	}*/
 }
 
 

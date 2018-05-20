@@ -102,18 +102,31 @@ public class AppController {
 		}
 	}
 	
-	@ApiOperation(value="Update user", response= Iterable.class)
-	@PutMapping("/user/update/{username}")
-	public User updateUser(@PathVariable(value = "username") String username, @RequestBody User user) {
-		username = username.toLowerCase();
-		User currentUser = appDao.findByUsername(username);
-		user.setUsername(username);
+	/*@ApiOperation(value="Update user", response= Iterable.class)
+	@PutMapping("/user/update")
+	public User updateUser(@RequestBody User user) {
+		if(user == null) return null;
+		User currentUser = appDao.findByUsername(user.getUsername().toLowerCase());
 		if(currentUser != null){
 			appDao.delete(currentUser);
 			return appDao.save(user);
 		} else{
 			return null;
 		}
+	}*/
+	@ApiOperation(value="Update user", response= Iterable.class)
+	@PutMapping("/user/update")
+	public User updateUser(@RequestBody User user) {
+		if(user == null) return null;
+		String username = user.getUsername();
+		if (username == null) return null;
+		username = username.toLowerCase();
+		User currentUser = appDao.findByUsername(username);
+		if(currentUser != null){
+			appDao.delete(currentUser);
+			return appDao.save(user);
+		}else 
+			return null;
 	}
 }
 
