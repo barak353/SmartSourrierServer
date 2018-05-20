@@ -74,7 +74,7 @@ public class AppController {
 	}
 	
 	@ApiOperation(value="Create user", response= Iterable.class)
-	@PostMapping("/user/create")
+	@PutMapping("/user/create")//Put is used for creating resource.
 	public User createUser(@RequestBody User user) {
 		if (user != null){
 			String username = user.getUsername();
@@ -91,7 +91,7 @@ public class AppController {
 	
 	
 	@ApiOperation(value="Update user", response= Iterable.class)
-	@PostMapping("/user/update")
+	@PutMapping("/user/update")//Put is used for overwriting exist resource.
 	public User updateUser(@RequestBody User user) {
 		if(user == null) return null;
 		String username = user.getUsername();
