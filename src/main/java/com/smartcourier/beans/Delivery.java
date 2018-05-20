@@ -9,13 +9,17 @@ import javax.persistence.*;
  *
  */
 @Entity
-@Table(name="Delivery")
+@Table(name="Delivery", 
+uniqueConstraints=
+@UniqueConstraint(columnNames={"agent_id", "monthInYear"})
+)
 
 public class Delivery implements Serializable {
 
 	@Id
 	@GeneratedValue 
 	private Long id;
+	private String MonthInYear;
 	private String address;
 	private String price;
 	private String state;
@@ -37,6 +41,14 @@ public class Delivery implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}   
+	
+	public String getMonthInYear() {
+		return MonthInYear;
+	}
+	public void setMonthInYear(String monthInYear) {
+		MonthInYear = monthInYear;
+	}
+	
 	public String getAddress() {
 		return this.address;
 	}
