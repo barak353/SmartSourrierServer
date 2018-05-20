@@ -89,33 +89,9 @@ public class AppController {
 		}
 	}
 	
-	@ApiOperation(value="Delete user", response= Iterable.class)
-	@DeleteMapping("/user/delete/{username}")
-	public Boolean deleteUser(@PathVariable(value = "username") String username) {
-		username = username.toLowerCase();
-		User user = appDao.findByUsername(username);
-		if(user != null){
-			appDao.delete(user);
-			return true;
-		} else{
-			return false;
-		}
-	}
 	
-	/*@ApiOperation(value="Update user", response= Iterable.class)
-	@PutMapping("/user/update")
-	public User updateUser(@RequestBody User user) {
-		if(user == null) return null;
-		User currentUser = appDao.findByUsername(user.getUsername().toLowerCase());
-		if(currentUser != null){
-			appDao.delete(currentUser);
-			return appDao.save(user);
-		} else{
-			return null;
-		}
-	}*/
 	@ApiOperation(value="Update user", response= Iterable.class)
-	@PutMapping("/user/update")
+	@PostMapping("/user/update")
 	public User updateUser(@RequestBody User user) {
 		if(user == null) return null;
 		String username = user.getUsername();
@@ -127,6 +103,19 @@ public class AppController {
 			return appDao.save(user);
 		}else 
 			return null;
+	}
+	
+	@ApiOperation(value="Delete user", response= Iterable.class)
+	@DeleteMapping("/user/delete/{username}")
+	public Boolean deleteUser(@PathVariable(value = "username") String username) {
+		username = username.toLowerCase();
+		User user = appDao.findByUsername(username);
+		if(user != null){
+			appDao.delete(user);
+			return true;
+		} else{
+			return false;
+		}
 	}
 }
 
