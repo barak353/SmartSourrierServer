@@ -19,7 +19,7 @@ public class Delivery implements Serializable {
 	@Id
 	@GeneratedValue 
 	private Long id;
-	private String MonthInYear;
+	private String monthInYear;
 	private String address;
 	private String price;
 	private String state;
@@ -43,10 +43,10 @@ public class Delivery implements Serializable {
 	}   
 	
 	public String getMonthInYear() {
-		return MonthInYear;
+		return monthInYear;
 	}
 	public void setMonthInYear(String monthInYear) {
-		MonthInYear = monthInYear;
+		monthInYear = monthInYear;
 	}
 	
 	public String getAddress() {
