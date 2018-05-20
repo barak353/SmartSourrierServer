@@ -46,7 +46,7 @@ public class Delivery implements Serializable {
 		return monthInYear;
 	}
 	public void setMonthInYear(String monthInYear) {
-		monthInYear = monthInYear;
+		this.monthInYear = monthInYear;
 	}
 	
 	public String getAddress() {
