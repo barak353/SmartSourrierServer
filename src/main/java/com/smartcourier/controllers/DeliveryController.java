@@ -19,6 +19,21 @@ import com.smartcourier.dao.DeliveryDao;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
+
+/*חשוב!
+ * אני צריך טבלה של הכתובות של כל המפעלים הכתובות זה שני מספרים של
+ *  longitudeוש altitude 
+ *  שהם משתני 
+ *  float.
+ *  נשאר לי לקחת כתובת של משלוח ולשרשר לסטרינג ואז להשתמש 
+ * google maps api ב
+ * שאני שולח כתובת ואני מקבל בחזרה
+ *  longitude 
+ *  ו altitude
+ *   נשאר לי לחשב מרחק בין שני נקודות וזה הפרמטר של המרחק של המשלוח מהמפעל.
+ *   עומר הביא לי קוד שעושה את ההמרה הזאת בעזרת גוגל מאפס
+ */
+
 @RestController
 @RequestMapping(path = "/delivery")
 @Api(value="Delivery Management")
