@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Table(
         name="SALARY", 
         uniqueConstraints=
-            @UniqueConstraint(columnNames={"agent_id", "monthInYear"})
+            @UniqueConstraint(columnNames={"courier_id", "monthInYear"})
     )
 
 
@@ -32,8 +32,8 @@ public class Salary implements Serializable {
 	@JsonIdentityReference(alwaysAsId = true)
 	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
   	@PrimaryKeyJoinColumn
-  	@JoinColumn(name = "agent_id")
-	private Agent agent;
+  	@JoinColumn(name = "courier_id")
+	private Courier courier;
 	
 	public String getTotalPaid() {
 		return totalPaid;
@@ -43,12 +43,12 @@ public class Salary implements Serializable {
 		this.totalPaid = totalPaid;
 	}
 
-	public Agent getAgent() {
-		return agent;
+	public Courier getCourier() {
+		return courier;
 	}
 
-	public void setAgent(Agent agent) {
-		this.agent = agent;
+	public void setCourier(Courier courier) {
+		this.courier = courier;
 	}
 
 	private static final long serialVersionUID = 1L;

@@ -13,12 +13,12 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 
 /**
- * Entity implementation class for Entity: Agent
+ * Entity implementation class for Entity: Courier
  *
  */
 @Entity
 
-public class Agent implements Serializable {
+public class Courier implements Serializable {
 
 	   
 	@Id
@@ -29,20 +29,20 @@ public class Agent implements Serializable {
 	private String preferredArea;
 	private String po;
 
-	@OneToOne(mappedBy = "agent", fetch = FetchType.LAZY)
+	@OneToOne(mappedBy = "courier", fetch = FetchType.LAZY)
 	private User user;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "agent_id")
+	@JoinColumn(name = "courier_id")
 	private List<Delivery> delivery;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "agent_id")
+    @JoinColumn(name = "courier_id")
 	private List<Salary> salary;
 	
 	private static final long serialVersionUID = 1L;
 
-	public Agent() {
+	public Courier() {
 		super();
 	}  
 	 

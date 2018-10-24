@@ -1,6 +1,6 @@
 package com.smartcourier.beans;
 
-import com.smartcourier.beans.Agent;
+import com.smartcourier.beans.Courier;
 import java.io.Serializable;
 import java.lang.String;
 import javax.persistence.*;
@@ -23,8 +23,8 @@ public class User implements Serializable {
 	private String lastName;
 	
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name = "agent_id")
-	private Agent agent;
+	@JoinColumn(name = "courier_id")
+	private Courier courier;
 	private static final long serialVersionUID = 1L;
 	
 	public User() {
@@ -69,12 +69,12 @@ public class User implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}   
-	public Agent getAgent() {
-		return this.agent;
+	public Courier getCourier() {
+		return this.courier;
 	}
 
-	public void setAgent(Agent agent) {
-		this.agent = agent;
+	public void setCourier(Courier courier) {
+		this.courier = courier;
 	}
    
 }

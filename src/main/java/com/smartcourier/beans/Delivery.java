@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Entity
 @Table(name="Delivery", 
 uniqueConstraints=
-@UniqueConstraint(columnNames={"agent_id", "monthInYear"})
+@UniqueConstraint(columnNames={"courier_id", "monthInYear"})
 )
 
 public class Delivery implements Serializable {
@@ -27,7 +27,7 @@ public class Delivery implements Serializable {
 	
 	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
   	@PrimaryKeyJoinColumn
-	private Agent agent;
+	private Courier courier;
 	
 	private static final long serialVersionUID = 1L;
 

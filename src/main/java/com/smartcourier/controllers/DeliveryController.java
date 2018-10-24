@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.smartcourier.beans.Agent;
+import com.smartcourier.beans.Courier;
 import com.smartcourier.beans.Delivery;
-import com.smartcourier.dao.AgentDao;
+import com.smartcourier.dao.CourierDao;
 import com.smartcourier.dao.DeliveryDao;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -45,7 +45,7 @@ public class DeliveryController {
 	DeliveryDao deliveryDao;
 	
 	@Autowired
-	AgentDao agentDao;
+	CourierDao courierDao;
 
 	@ApiOperation(value="Get delivery", response= Iterable.class)
 	@GetMapping("/{deliveryId}")
@@ -59,13 +59,13 @@ public class DeliveryController {
 	}
 	
 	@ApiOperation(value="Create delivery", response= Iterable.class)
-	@PostMapping("/create/{agentId}")
-	public Delivery createDelivery(@PathVariable(value = "agentId") Long agentId, @RequestBody Delivery delivery) {
-		Agent agent = agentDao.findOne(agentId);
-		if(agent != null){
-			agentDao.delete(agent);
-			agent.getDelivery().add(delivery);
-			agentDao.save(agent);
+	@PostMapping("/create/{courierId}")
+	public Delivery createDelivery(@PathVariable(value = "courierId") Long courierId, @RequestBody Delivery delivery) {
+		Courier courier = courierDao.findOne(courierId);
+		if(courier != null){
+			courierDao.delete(courier);
+			courier.getDelivery().add(delivery);
+			courierDao.save(courier);
 			return delivery;
 		} else{
 			return null;
@@ -73,23 +73,23 @@ public class DeliveryController {
 	}
 	
 	@ApiOperation(value="Delete delivery", response= Iterable.class)
-	@DeleteMapping("/delete/{agentId}/{deliveryId}")
-	public Boolean deleteDelivery(@PathVariable(value = "agentId") Long agentId, @PathVariable(value = "deliveryId") Long deliveryId) {
-		Agent agent = agentDao.findOne(agentId);
-		if(agent != null){
+	@DeleteMapping("/delete/{courierId}/{deliveryId}")
+	public Boolean deleteDelivery(@PathVariable(value = "courierId") Long courierId, @PathVariable(value = "deliveryId") Long deliveryId) {
+		Courier courier = courierDao.findOne(courierId);
+		if(courier != null){
 			Delivery deliveryToDelete = null;
-			for(Delivery delivery : agent.getDelivery()){
+			for(Delivery delivery : courier.getDelivery()){
 				if(delivery.getId().equals(deliveryId)){
 					deliveryToDelete = delivery;
 					break;
 				}
 			}
 			if(deliveryToDelete == null)
-				return false;//Agent dosen't have that delivery.
-			agentDao.delete(agent);
-			agent.getDelivery().remove(deliveryToDelete);
-			agentDao.save(agent);
-			deliveryDao.delete(deliveryToDelete);//We can delete delivery just after we detach the agent from that delivery.
+				return false;//Courier dosen't have that delivery.
+			courierDao.delete(courier);
+			courier.getDelivery().remove(deliveryToDelete);
+			courierDao.save(courier);
+			deliveryDao.delete(deliveryToDelete);//We can delete delivery just after we detach the courier from that delivery.
 			return true;
 		} else{
 			return null;
@@ -104,7 +104,7 @@ public class DeliveryController {
 			deliveryDao.delete(currentDelivery);
 			return deliveryDao.save(delivery);
 		} else{
-			return null;//Agent is not exist.
+			return null;//Courier is not exist.
 		}
 	}
 }

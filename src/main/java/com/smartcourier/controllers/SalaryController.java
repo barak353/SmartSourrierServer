@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.smartcourier.beans.Agent;
+import com.smartcourier.beans.Courier;
 import com.smartcourier.beans.Delivery;
 import com.smartcourier.beans.Salary;
-import com.smartcourier.dao.AgentDao;
+import com.smartcourier.dao.CourierDao;
 import com.smartcourier.dao.SalaryDao;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -31,7 +31,7 @@ public class SalaryController {
 	SalaryDao salaryDao;
 	
 	@Autowired
-	AgentDao agentDao;
+	CourierDao courierDao;
 
 	@GetMapping("/getAll")
 	public List<Salary> getAllSalary(){
@@ -39,21 +39,21 @@ public class SalaryController {
 	}
 	
 	@ApiOperation(value="Create salary", response= Iterable.class)
-	@PostMapping("/create/{agentId}")
-	public Salary createSalary(@PathVariable(value = "agentId") Long agentId, @RequestBody Salary salary) {
-		Agent agent = agentDao.findOne(agentId);
-		if(agent != null){
-			for (Iterator<Salary> iterator = agent.getSalary().iterator(); iterator.hasNext();) {
+	@PostMapping("/create/{courierId}")
+	public Salary createSalary(@PathVariable(value = "courierId") Long courierId, @RequestBody Salary salary) {
+		Courier courier = courierDao.findOne(courierId);
+		if(courier != null){
+			for (Iterator<Salary> iterator = courier.getSalary().iterator(); iterator.hasNext();) {
 			    Salary salaryIt = iterator.next();
-			    if (salaryIt.getMonthInYear().equals(salary.getMonthInYear())) {//if monthInYear already exist in agent's salaries list.
+			    if (salaryIt.getMonthInYear().equals(salary.getMonthInYear())) {//if monthInYear already exist in courier's salaries list.
 			        // Remove the current element from the iterator and the list.
 			        iterator.remove();
 					salaryDao.delete(salaryIt);
 			    }
 			}
-			agentDao.delete(agent);
-			agent.getSalary().add(salary);
-			agentDao.save(agent);
+			courierDao.delete(courier);
+			courier.getSalary().add(salary);
+			courierDao.save(courier);
 			
 			return salary;
 		} else{
@@ -77,7 +77,7 @@ public class SalaryController {
 			deliveryDao.delete(currentDelivery);
 			return deliveryDao.save(delivery);
 		} else{
-			return null;//Agent is not exist.
+			return null;//Courier is not exist.
 		}
 	}*/
 }
