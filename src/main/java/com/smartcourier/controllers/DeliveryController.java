@@ -60,7 +60,7 @@ public class DeliveryController {
 	
 	@ApiOperation(value="Create delivery", response= Iterable.class)
 	@PostMapping("/create/{courierId}")
-	public Delivery createDelivery(@PathVariable(value = "courierId") Long courierId, @RequestBody Delivery delivery) {
+	public Delivery createDeliveryAndAssignToCourier(@PathVariable(value = "courierId") Long courierId, @RequestBody Delivery delivery) {
 		Courier courier = courierDao.findOne(courierId);
 		if(courier != null){
 			courierDao.delete(courier);
@@ -70,6 +70,13 @@ public class DeliveryController {
 		} else{
 			return null;
 		}
+	}
+	
+	@ApiOperation(value="Create delivery", response= Iterable.class)
+	@PostMapping("/create")
+	public Delivery createDelivery(@RequestBody Delivery delivery) {
+		deliveryDao.save(delivery);
+		return delivery;
 	}
 	
 	@ApiOperation(value="Delete delivery", response= Iterable.class)
