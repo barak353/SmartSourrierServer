@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.smartcourier.ABCalgorithm;
 import com.smartcourier.beans.Courier;
 import com.smartcourier.beans.Delivery;
 import com.smartcourier.dao.CourierDao;
@@ -47,6 +49,8 @@ public class DeliveryController {
 	@Autowired
 	CourierDao courierDao;
 
+	private ABCalgorithm beeColony = new ABCalgorithm();	
+	
 	@ApiOperation(value="Get delivery", response= Iterable.class)
 	@GetMapping("/{deliveryId}")
 	public Delivery getDeliveryById(@PathVariable(value = "deliveryId") Long deliveryId) {
@@ -76,6 +80,7 @@ public class DeliveryController {
 	@PostMapping("/create")
 	public Delivery createDelivery(@RequestBody Delivery delivery) {
 		deliveryDao.save(delivery);
+		beeColony.runABCalgorithm();
 		return delivery;
 	}
 	
