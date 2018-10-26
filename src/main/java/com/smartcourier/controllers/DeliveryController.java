@@ -80,6 +80,7 @@ public class DeliveryController {
 	@PostMapping("/create")
 	public Delivery createDelivery(@RequestBody Delivery delivery) {
 		deliveryDao.save(delivery);
+		
 		beeColony.runABCalgorithm();
 		return delivery;
 	}

@@ -2,6 +2,8 @@ package com.smartcourier.beans;
 
 import java.io.Serializable;
 import java.lang.String;
+import java.util.List;
+
 import javax.persistence.*;
 
 /**
@@ -13,7 +15,12 @@ import javax.persistence.*;
 uniqueConstraints=
 @UniqueConstraint(columnNames={"courier_id", "monthInYear"})
 )
-
+/*	We distinguish between the three types of deliveries that exist in our database: 
+• 	Type 0: Deliveries that have not yet been assigned to a courier because they have not yet been distributed by the algorithm.
+•	Type 1: Deliveries were distributed by the algorithm to a courier, but the courier has not courier has not yet confirmed that he is willing to distribute them.
+•	Type 2: deliveries were distributed by the algorithm to the courier and were confirmed by the courier that he is willing to distribute them.
+•	Type 3: Deliveries that have already been delivered to the destination and therefore will no longer play a role in the algorithm.
+*/
 public class Delivery implements Serializable {
 
 	@Id
@@ -50,6 +57,10 @@ public class Delivery implements Serializable {
 	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
   	@PrimaryKeyJoinColumn
 	private Courier courier;
+	
+	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+  	@PrimaryKeyJoinColumn
+	private Region region;
 	
 	private static final long serialVersionUID = 1L;
 
