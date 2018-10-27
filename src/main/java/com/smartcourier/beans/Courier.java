@@ -22,7 +22,7 @@ public class Courier implements Serializable {
 	   
 	@Id
 	@GeneratedValue
-	private Long id;
+	private Long courier_id;
 	private String email;
 	private String phone;
 	private String preferredArea;
@@ -46,11 +46,11 @@ public class Courier implements Serializable {
 	}  
 	 
 	public Long getId() {
-		return this.id;
+		return this.courier_id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setId(Long courier_id) {
+		this.courier_id = courier_id;
 	}   
 	public String getEmail() {
 		return this.email;
