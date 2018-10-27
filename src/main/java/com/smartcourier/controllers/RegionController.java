@@ -5,10 +5,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.smartcourier.ABCalgorithm;
+import com.smartcourier.beans.Courier;
+import com.smartcourier.beans.Delivery;
 import com.smartcourier.beans.Region;
 import com.smartcourier.dao.RegionDao;
 import io.swagger.annotations.Api;
@@ -20,6 +25,7 @@ import io.swagger.annotations.ApiOperation;
 public class RegionController {
 
 	public static final Logger logger = LoggerFactory.getLogger(RegionController.class);
+	private ABCalgorithm beeColony = new ABCalgorithm();	
 
 	@Autowired
 	RegionDao regionDao;
@@ -36,10 +42,29 @@ public class RegionController {
 		return region;
 	}
 
-	//Needs to add option for deleting region. If we delete region we need to iterate all the deliveries in this region and delete this region. Then we need to change those deliveries to type 0.
+	
+	@ApiOperation(value="Update region", response= Iterable.class)//Please use this to create new delivery (because every delivery have a region).
+	@PutMapping("/update/{regionId}")
+	public Region addDeliveryToRegion(@PathVariable(value = "regionId") Long regionId, @RequestBody Delivery delivery) {
+		Region currentRegion = regionDao.findOne(regionId);
+		if(currentRegion != null){
+			//currentRegion.getDelivery().add(region.getDelivery());
+			/*for(Delivery delivery : currentRegion.getDelivery())
+			{
+				region.getDelivery().add(delivery);
+			}*/
+			//regionDao.delete(currentRegion);
+			//Region newRegion = regionDao.save(region);
+			currentRegion.getDelivery().add(delivery);
+			regionDao.save(currentRegion);
+			if( currentRegion.getDelivery().size()  > currentRegion.getThreshold() ) //If the number of deliveries in this region is higher then the region threshold, then run the distribution algorithm.
+				beeColony.runABCalgorithm();
+			return currentRegion;
+
+		} else{
+			return null;
+		}
+	}
+	
+	//Needs to add option for deleting region. If we delete region we need to iterate all the deliveries in this region and delete them.
 }
-
-
-
-
-

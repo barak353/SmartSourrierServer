@@ -98,12 +98,3 @@ public class CourierController {
 		}
 	}
 }
-
-
-
-
-
-
-
-
-

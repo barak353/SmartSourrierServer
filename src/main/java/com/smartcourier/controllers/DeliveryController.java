@@ -48,8 +48,6 @@ public class DeliveryController {
 	
 	@Autowired
 	CourierDao courierDao;
-
-	private ABCalgorithm beeColony = new ABCalgorithm();	
 	
 	@ApiOperation(value="Get delivery", response= Iterable.class)
 	@GetMapping("/{deliveryId}")
@@ -77,11 +75,9 @@ public class DeliveryController {
 	}
 	
 	@ApiOperation(value="Create delivery", response= Iterable.class)
-	@PostMapping("/create")
+	@PostMapping("/create") //Please use updateRegion to create new delivery (because every delivery have a region).
 	public Delivery createDelivery(@RequestBody Delivery delivery) {
 		deliveryDao.save(delivery);
-		
-		beeColony.runABCalgorithm();
 		return delivery;
 	}
 	
