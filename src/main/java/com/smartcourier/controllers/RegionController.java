@@ -4,6 +4,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -48,13 +49,6 @@ public class RegionController {
 	public Region addDeliveryToRegion(@PathVariable(value = "regionId") Long regionId, @RequestBody Delivery delivery) {
 		Region currentRegion = regionDao.findOne(regionId);
 		if(currentRegion != null){
-			//currentRegion.getDelivery().add(region.getDelivery());
-			/*for(Delivery delivery : currentRegion.getDelivery())
-			{
-				region.getDelivery().add(delivery);
-			}*/
-			//regionDao.delete(currentRegion);
-			//Region newRegion = regionDao.save(region);
 			currentRegion.getDelivery().add(delivery);
 			regionDao.save(currentRegion);
 			if( currentRegion.getDelivery().size()  > currentRegion.getThreshold() ) //If the number of deliveries in this region is higher then the region threshold, then run the distribution algorithm.
@@ -66,5 +60,19 @@ public class RegionController {
 		}
 	}
 	
-	//Needs to add option for deleting region. If we delete region we need to iterate all the deliveries in this region and delete them.
-}
+	@ApiOperation(value="Delete region", response= Iterable.class)
+	@DeleteMapping("/delete/{regionId}")
+	public Boolean deleteRegion(@PathVariable(value = "regionId") Long regionId) {
+		//Region will be deleted only if it have 0 deliveries.
+		Region currentRegion = regionDao.findOne(regionId);
+		if(currentRegion != null){
+			if(currentRegion.getDelivery().size() <= 0)
+			{
+				regionDao.delete(currentRegion);
+				return true;
+			}
+		return false;
+		} else{
+			return false;
+		}
+	}}
