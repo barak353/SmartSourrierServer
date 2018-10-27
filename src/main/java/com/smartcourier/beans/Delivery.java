@@ -10,10 +10,14 @@ import javax.persistence.*;
  * Entity implementation class for Entity: Delivery
  *
  */
+/**
+ * @author User
+ *
+ */
 @Entity
-@Table(name="Delivery", 
-uniqueConstraints=
-@UniqueConstraint(columnNames={"courier_id", "monthInYear"})
+@Table(name="Delivery"
+/*uniqueConstraints=
+@UniqueConstraint(columnNames={"courier_id", "monthInYear"})*/
 )
 /*	We distinguish between the three types of deliveries that exist in our database: 
 • 	Type 0: Deliveries that have not yet been assigned to a courier because they have not yet been distributed by the algorithm.
@@ -26,7 +30,7 @@ public class Delivery implements Serializable {
 	@Id
 	@GeneratedValue 
 	//DB's and algorithm's details
-	private Long id;
+	private Long division_id;
 	private Integer type;//There are 4 types od deliveries: Type0, Type1, Type 2 and Type 3 as described in section 3.6.
 	private Double lat;
 	private Double lng;
@@ -51,12 +55,12 @@ public class Delivery implements Serializable {
 	private String pasted_on_door;
 	private String text;
 	//Salaray's details
-	private String monthInYear; 
-	private String price;
+	//private String monthInYear; 
+	//private String price;
 	
 	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
   	@PrimaryKeyJoinColumn
-	private Courier courier;
+	private Division division;
 	
 	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
   	@PrimaryKeyJoinColumn
@@ -68,19 +72,28 @@ public class Delivery implements Serializable {
 		super();
 	}   
 	public Long getId() {
-		return this.id;
+		return this.division_id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setId(Long division_id) {
+		this.division_id = division_id;
 	}   
 	
-	public String getMonthInYear() {
+	/*public String getMonthInYear() {
 		return monthInYear;
 	}
 	public void setMonthInYear(String monthInYear) {
 		this.monthInYear = monthInYear;
 	}
+	
+	public String getPrice() {
+		return this.price;
+	}
+
+	public void setPrice(String price) {
+		this.price = price;
+	}   
+	*/
 	
 	public String getAddress() {
 		return this.address;
@@ -90,13 +103,7 @@ public class Delivery implements Serializable {
 		this.address = address;
 	}   
 
-	public String getPrice() {
-		return this.price;
-	}
 
-	public void setPrice(String price) {
-		this.price = price;
-	}   
 
 	public String getPhone() {
 		return this.phone;
@@ -226,11 +233,23 @@ public class Delivery implements Serializable {
 	public void setText(String text) {
 		this.text = text;
 	}
-	public Courier getCourier() {
-		return courier;
+	public Long getDivision_id() {
+		return division_id;
 	}
-	public void setCourier(Courier courier) {
-		this.courier = courier;
+	public void setDivision_id(Long division_id) {
+		this.division_id = division_id;
+	}
+	public Division getDivision() {
+		return division;
+	}
+	public void setDivision(Division division) {
+		this.division = division;
+	}
+	public Region getRegion() {
+		return region;
+	}
+	public void setRegion(Region region) {
+		this.region = region;
 	}
    
 }

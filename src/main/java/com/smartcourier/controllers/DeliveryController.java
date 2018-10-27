@@ -66,7 +66,7 @@ public class DeliveryController {
 		Courier courier = courierDao.findOne(courierId);
 		if(courier != null){
 			courierDao.delete(courier);
-			courier.getDelivery().add(delivery);
+			courier.getDivision().getDelivery().add(delivery);
 			courierDao.save(courier);
 			return delivery;
 		} else{
@@ -87,7 +87,7 @@ public class DeliveryController {
 		Courier courier = courierDao.findOne(courierId);
 		if(courier != null){
 			Delivery deliveryToDelete = null;
-			for(Delivery delivery : courier.getDelivery()){
+			for(Delivery delivery : courier.getDivision().getDelivery()){
 				if(delivery.getId().equals(deliveryId)){
 					deliveryToDelete = delivery;
 					break;
@@ -96,7 +96,7 @@ public class DeliveryController {
 			if(deliveryToDelete == null)
 				return false;//Courier dosen't have that delivery.
 			courierDao.delete(courier);
-			courier.getDelivery().remove(deliveryToDelete);
+			courier.getDivision().getDelivery().remove(deliveryToDelete);
 			courierDao.save(courier);
 			deliveryDao.delete(deliveryToDelete);//We can delete delivery just after we detach the courier from that delivery.
 			return true;

@@ -1,4 +1,4 @@
-package com.smartcourier.beans;
+/*package com.smartcourier.beans;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
  * Entity implementation class for Entity: Salary
  *
  */
-@Entity
+/*@Entity
 @Table(
         name="SALARY", 
         uniqueConstraints=
@@ -74,4 +74,4 @@ public class Salary implements Serializable {
 	}
 
    
-}
+}*/

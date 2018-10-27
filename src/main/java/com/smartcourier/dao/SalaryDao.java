@@ -1,4 +1,4 @@
-package com.smartcourier.dao;
+/*package com.smartcourier.dao;
 
 import java.util.List;
 
@@ -11,3 +11,4 @@ import com.smartcourier.beans.Salary;
 public interface SalaryDao extends JpaRepository<Salary, Long>{
 	public List<Salary> findByMonthInYear(String monthInYear);
 }
+*/

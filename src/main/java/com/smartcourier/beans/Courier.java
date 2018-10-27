@@ -31,16 +31,40 @@ public class Courier implements Serializable {
 	@OneToOne(mappedBy = "courier", fetch = FetchType.LAZY)
 	private User user;
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "courier_id")
-	private List<Delivery> delivery;
-
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	/*@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "courier_id")
-	private List<Salary> salary;
+	private List<Salary> salary;*/
+	
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "division_id")
+	private Division division;
 	
 	private static final long serialVersionUID = 1L;
 
+	public Long getCourier_id() {
+		return courier_id;
+	}
+
+	public void setCourier_id(Long courier_id) {
+		this.courier_id = courier_id;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Division getDivision() {
+		return division;
+	}
+
+	public void setDivision(Division division) {
+		this.division = division;
+	}	
+	
 	public Courier() {
 		super();
 	}  
@@ -81,19 +105,12 @@ public class Courier implements Serializable {
 	public void setPo(String po) {
 		this.po = po;
 	}   
-	public List<Delivery> getDelivery() {
-		return this.delivery;
-	}
-
-	public void setDelivery(List<Delivery> delivery) {
-		this.delivery = delivery;
-	}
 	
-	public List<Salary> getSalary() {
+	/*public List<Salary> getSalary() {
 		return salary;
 	}
 	
 	public void setSalary(List<Salary> salary) {
 		this.salary = salary;
-	}
+	}*/
 }

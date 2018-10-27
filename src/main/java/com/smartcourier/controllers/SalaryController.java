@@ -1,4 +1,4 @@
-package com.smartcourier.controllers;
+/*package com.smartcourier.controllers;
 
 import java.util.Iterator;
 import java.util.List;
@@ -78,7 +78,7 @@ public class SalaryController {
 			return null;//Courier is not exist.
 		}
 	}*/
-}
+//}
 
 
 
