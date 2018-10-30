@@ -30,7 +30,7 @@ public class Delivery implements Serializable {
 	@Id
 	@GeneratedValue 
 	//DB's and algorithm's details
-	private Long division_id;
+	private Long id;
 	private Integer type;//There are 4 types od deliveries: Type0, Type1, Type 2 and Type 3 as described in section 3.6.
 	private Double lat;
 	private Double lng;
@@ -60,7 +60,7 @@ public class Delivery implements Serializable {
 	
 	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
   	@PrimaryKeyJoinColumn
-	private Division division;
+	private Courier courier;
 	
 	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
   	@PrimaryKeyJoinColumn
@@ -72,11 +72,11 @@ public class Delivery implements Serializable {
 		super();
 	}   
 	public Long getId() {
-		return this.division_id;
+		return this.id;
 	}
 
 	public void setId(Long division_id) {
-		this.division_id = division_id;
+		this.id = division_id;
 	}   
 	
 	/*public String getMonthInYear() {
@@ -102,7 +102,6 @@ public class Delivery implements Serializable {
 	public void setAddress(String address) {
 		this.address = address;
 	}   
-
 
 
 	public String getPhone() {
@@ -233,17 +232,12 @@ public class Delivery implements Serializable {
 	public void setText(String text) {
 		this.text = text;
 	}
-	public Long getDivision_id() {
-		return division_id;
+
+	public Courier getCourier() {
+		return courier;
 	}
-	public void setDivision_id(Long division_id) {
-		this.division_id = division_id;
-	}
-	public Division getDivision() {
-		return division;
-	}
-	public void setDivision(Division division) {
-		this.division = division;
+	public void setCourier(Courier courier) {
+		this.courier = courier;
 	}
 	public Region getRegion() {
 		return region;

@@ -26,6 +26,14 @@ public class Courier implements Serializable {
 	private String email;
 	private String phone;
 	private String preferredArea;
+	public List<Delivery> getDelivery() {
+		return delivery;
+	}
+
+	public void setDelivery(List<Delivery> delivery) {
+		this.delivery = delivery;
+	}
+
 	private String po;
 
 	@OneToOne(mappedBy = "courier", fetch = FetchType.LAZY)
@@ -35,9 +43,9 @@ public class Courier implements Serializable {
     @JoinColumn(name = "courier_id")
 	private List<Salary> salary;*/
 	
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name = "division_id")
-	private Division division;
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "courier_id")
+	private List<Delivery> delivery;
 	
 	private static final long serialVersionUID = 1L;
 
@@ -56,14 +64,6 @@ public class Courier implements Serializable {
 	public void setUser(User user) {
 		this.user = user;
 	}
-
-	public Division getDivision() {
-		return division;
-	}
-
-	public void setDivision(Division division) {
-		this.division = division;
-	}	
 	
 	public Courier() {
 		super();
