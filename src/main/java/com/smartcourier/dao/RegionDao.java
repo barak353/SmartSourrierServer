@@ -6,5 +6,5 @@ import com.smartcourier.beans.Region;
 
 @Repository
 public interface RegionDao extends JpaRepository<Region, Long>{
-	public Region findByRegion(String region);
+	public Region findByRegionName(String regionName);
 }

@@ -1,13 +1,17 @@
 package com.smartcourier.beans;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -41,28 +45,28 @@ public class Courier implements Serializable {
 	@JoinColumn(name = "courier_id")
 	private List<Delivery> delivery;
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "courier_id")
-	private List<Region> region;
-	
+	@ManyToMany(mappedBy = "courier")
+	private Set<Region> region = new HashSet<>();
+    
 	private static final long serialVersionUID = 1L;
-
-	/*public List<Region> getRegion() {
-		return region;
-	}
-
-	public void setRegion(List<Region> region) {
-		this.region = region;
-	}*/
-
-	/*public List<Delivery> getDelivery() {
+	
+	
+	public List<Delivery> getDelivery() {
 		return delivery;
 	}
 
 	public void setDelivery(List<Delivery> delivery) {
 		this.delivery = delivery;
-	}*/
-	
+	}
+
+	public Set<Region> getRegion() {
+		return region;
+	}
+
+	public void setRegion(Set<Region> region) {
+		this.region = region;
+	}
+
 	public Long getCourier_id() {
 		return courier_id;
 	}

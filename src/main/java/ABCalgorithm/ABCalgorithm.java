@@ -1,5 +1,10 @@
 package ABCalgorithm;
 
+import java.util.ArrayList;
+
+import com.smartcourier.beans.Delivery;
+import com.smartcourier.controllers.DeliveryController;
+
 public class ABCalgorithm {
 	
 
@@ -14,7 +19,8 @@ public class ABCalgorithm {
 	
 	public void SendEmployedBees()
 	{
-		
+		DeliveryController deliveryController = new DeliveryController();
+		ArrayList<Delivery> allDeliveries = (ArrayList<Delivery>) deliveryController.getAllDeliverys();
 	}
 	
 	public void CalculateProbabilities(){

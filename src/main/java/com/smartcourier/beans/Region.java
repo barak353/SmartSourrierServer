@@ -1,7 +1,9 @@
 package com.smartcourier.beans;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -20,23 +22,37 @@ public class Region implements Serializable {
 	@GeneratedValue 
 	//DB's and algorithm's details
 	private Long region_id;
-	private String region;
+	private String regionName;
 	private Integer threshold;//Inside createDelivery method in DeliveryController class, the threshold of the region of the created delivery will be compared with the number of the deliveries in that region. f the threshold has been exceeded, then the distribution algorithm will be called on that region.
 	
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "delivery_id")
 	private List<Delivery> delivery;
-	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "courier_id")
-	private List<Courier> courier;
-	
-	public List<Courier> getCourier() {
+
+	@ManyToMany(cascade = { 
+		    CascadeType.PERSIST, 
+		    CascadeType.MERGE
+		})
+		@JoinTable(name = "region_courier",
+		    joinColumns = @JoinColumn(name = "region_id"),
+		    inverseJoinColumns = @JoinColumn(name = "courier_id")
+		)
+	private Set<Courier> courier = new HashSet<>();
+
+	public Long getRegion_id() {
+		return region_id;
+	}
+
+	public void setRegion_id(Long region_id) {
+		this.region_id = region_id;
+	}
+
+	public Set<Courier> getCourier() {
 		return courier;
 	}
 
-	public void setCourier(List<Courier> courier) {
+	public void setCourier(Set<Courier> courier) {
 		this.courier = courier;
 	}
 
@@ -55,12 +71,12 @@ public class Region implements Serializable {
 		this.region_id = region_id;
 	}
 	
-	public String getRegion() {
-		return region;
+	public String getRegionName() {
+		return regionName;
 	}
 
-	public void setRegion(String region) {
-		this.region = region;
+	public void setRegionName(String regionName) {
+		this.regionName = regionName;
 	}
 
 	public Integer getThreshold() {

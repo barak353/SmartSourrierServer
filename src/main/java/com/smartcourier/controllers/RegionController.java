@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.smartcourier.beans.Courier;
 import com.smartcourier.beans.Delivery;
 import com.smartcourier.beans.Region;
 import com.smartcourier.dao.CourierDao;
@@ -65,7 +66,7 @@ public class RegionController {
 	}
 	
 	
-	/*@ApiOperation(value="Update region", response= Iterable.class)//Please use this to create new delivery (because every delivery have a region).
+	@ApiOperation(value="Update region", response= Iterable.class)//Please use this to create new delivery (because every delivery have a region).
 	@PutMapping("/update/{regionId}/{courierId}")
 	public Region addCourierToRegion(@PathVariable(value = "regionId") Long regionId, @PathVariable(value = "courierId") Long couriderId) {
 		Region currentRegion = regionDao.findOne(regionId);
@@ -77,7 +78,7 @@ public class RegionController {
 		} else{
 			return null;
 		}
-	}*/
+	}
 	
 	@ApiOperation(value="Delete region", response= Iterable.class)
 	@DeleteMapping("/delete/{regionId}")

@@ -28,7 +28,7 @@ public class Delivery implements Serializable {
 	@Id
 	@GeneratedValue 
 	//DB's and algorithm's details
-	private Long id;
+	private Long delivery_id;
 	private Integer type;//There are 4 types od deliveries: Type0, Type1, Type 2 and Type 3 as described in section 3.6.
 	private Double lat;
 	private Double lng;
@@ -62,6 +62,7 @@ public class Delivery implements Serializable {
 	private Courier courier;
 	
 	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	@JoinColumn(name = "region_id")
   	@PrimaryKeyJoinColumn
 	private Region region;
 	
@@ -71,11 +72,11 @@ public class Delivery implements Serializable {
 		super();
 	}   
 	public Long getId() {
-		return this.id;
+		return this.delivery_id;
 	}
 
-	public void setId(Long division_id) {
-		this.id = division_id;
+	public void setId(Long delivery_id) {
+		this.delivery_id = delivery_id;
 	}   
 	
 	/*public String getMonthInYear() {
