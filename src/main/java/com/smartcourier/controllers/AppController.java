@@ -27,7 +27,7 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping(path = "/app")
 @Api(value="App Management")
 public class AppController {
-//test
+
 	public static final Logger logger = LoggerFactory.getLogger(AppController.class);
 
 	@Autowired
