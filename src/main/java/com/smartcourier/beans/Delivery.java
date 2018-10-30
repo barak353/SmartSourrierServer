@@ -2,8 +2,6 @@ package com.smartcourier.beans;
 
 import java.io.Serializable;
 import java.lang.String;
-import java.util.List;
-
 import javax.persistence.*;
 
 /**
@@ -59,6 +57,7 @@ public class Delivery implements Serializable {
 	//private String price;
 	
 	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	@JoinColumn(name = "courier_id")
   	@PrimaryKeyJoinColumn
 	private Courier courier;
 	
@@ -233,12 +232,12 @@ public class Delivery implements Serializable {
 		this.text = text;
 	}
 
-	public Courier getCourier() {
+	/*public Courier getCourier() {
 		return courier;
 	}
 	public void setCourier(Courier courier) {
 		this.courier = courier;
-	}
+	}*/
 	public Region getRegion() {
 		return region;
 	}

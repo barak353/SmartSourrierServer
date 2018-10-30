@@ -12,14 +12,14 @@ import javax.persistence.*;
 @Entity
 @Table(name="Region", 
 uniqueConstraints=
-@UniqueConstraint(columnNames={"id"})
+@UniqueConstraint(columnNames={"region_id"})
 )
 public class Region implements Serializable {
 
 	@Id
 	@GeneratedValue 
 	//DB's and algorithm's details
-	private Long id;
+	private Long region_id;
 	private String region;
 	private Integer threshold;//Inside createDelivery method in DeliveryController class, the threshold of the region of the created delivery will be compared with the number of the deliveries in that region. f the threshold has been exceeded, then the distribution algorithm will be called on that region.
 	
@@ -28,6 +28,18 @@ public class Region implements Serializable {
     @JoinColumn(name = "delivery_id")
 	private List<Delivery> delivery;
 	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "courier_id")
+	private List<Courier> courier;
+	
+	public List<Courier> getCourier() {
+		return courier;
+	}
+
+	public void setCourier(List<Courier> courier) {
+		this.courier = courier;
+	}
+
 	private static final long serialVersionUID = 1L;
 
 	public Region() {
@@ -36,11 +48,11 @@ public class Region implements Serializable {
 	}
    
 	public Long getId() {
-		return id;
+		return region_id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setId(Long region_id) {
+		this.region_id = region_id;
 	}
 	
 	public String getRegion() {

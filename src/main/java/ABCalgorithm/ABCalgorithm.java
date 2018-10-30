@@ -1,4 +1,4 @@
-package com.smartcourier;
+package ABCalgorithm;
 
 public class ABCalgorithm {
 	

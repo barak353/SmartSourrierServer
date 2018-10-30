@@ -7,17 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.smartcourier.ABCalgorithm;
-import com.smartcourier.beans.Courier;
 import com.smartcourier.beans.Delivery;
 import com.smartcourier.beans.Region;
+import com.smartcourier.dao.CourierDao;
 import com.smartcourier.dao.RegionDao;
+
+import ABCalgorithm.ABCalgorithm;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -32,6 +32,9 @@ public class RegionController {
 	@Autowired
 	RegionDao regionDao;
 	
+	@Autowired
+	CourierDao courierDao;
+		
 	@GetMapping("/getAll")
 	public List<Region> getAllSalary(){
 		return regionDao.findAll();
@@ -60,6 +63,21 @@ public class RegionController {
 			return null;
 		}
 	}
+	
+	
+	/*@ApiOperation(value="Update region", response= Iterable.class)//Please use this to create new delivery (because every delivery have a region).
+	@PutMapping("/update/{regionId}/{courierId}")
+	public Region addCourierToRegion(@PathVariable(value = "regionId") Long regionId, @PathVariable(value = "courierId") Long couriderId) {
+		Region currentRegion = regionDao.findOne(regionId);
+		if(currentRegion != null){
+			Courier courier = courierDao.findOne(couriderId);
+			currentRegion.getCourier().add(courier);
+			regionDao.save(currentRegion);
+			return currentRegion;
+		} else{
+			return null;
+		}
+	}*/
 	
 	@ApiOperation(value="Delete region", response= Iterable.class)
 	@DeleteMapping("/delete/{regionId}")

@@ -5,7 +5,6 @@
 		<class>com.smartcourier.beans.Delivery</class>
 		<class>com.smartcourier.beans.Courier</class>
 <!--  	<class>com.smartcourier.beans.Salary</class> -->
-		<class>com.smartcourier.beans.Distribution</class>
 		<class>com.smartcourier.beans.Region</class>
 	</persistence-unit>
 </persistence>

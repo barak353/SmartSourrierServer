@@ -4,7 +4,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,9 +11,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.smartcourier.ABCalgorithm;
-import com.smartcourier.beans.Courier;
 import com.smartcourier.beans.Delivery;
 import com.smartcourier.dao.CourierDao;
 import com.smartcourier.dao.DeliveryDao;
@@ -60,7 +56,7 @@ public class DeliveryController {
 		return deliveryDao.findAll();
 	}
 	
-	@ApiOperation(value="Create delivery", response= Iterable.class)
+	/*@ApiOperation(value="Create delivery", response= Iterable.class)
 	@PostMapping("/create/{courierId}")
 	public Delivery createDeliveryAndAssignToCourier(@PathVariable(value = "courierId") Long courierId, @RequestBody Delivery delivery) {
 		Courier courier = courierDao.findOne(courierId);
@@ -72,7 +68,7 @@ public class DeliveryController {
 		} else{
 			return null;
 		}
-	}
+	}*/
 	
 	@ApiOperation(value="Create delivery", response= Iterable.class)
 	@PostMapping("/create") //Please use updateRegion to create new delivery (because every delivery have a region).
@@ -81,7 +77,7 @@ public class DeliveryController {
 		return delivery;
 	}
 	
-	@ApiOperation(value="Delete delivery", response= Iterable.class)
+	/*@ApiOperation(value="Delete delivery", response= Iterable.class)
 	@DeleteMapping("/delete/{courierId}/{deliveryId}")
 	public Boolean deleteDelivery(@PathVariable(value = "courierId") Long courierId, @PathVariable(value = "deliveryId") Long deliveryId) {
 		Courier courier = courierDao.findOne(courierId);
@@ -103,7 +99,7 @@ public class DeliveryController {
 		} else{
 			return null;
 		}
-	}
+	}*/
 	
 	@ApiOperation(value="Update delivery", response= Iterable.class)
 	@PutMapping("/update/{deliveryId}")
