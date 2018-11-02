@@ -80,13 +80,9 @@ public class Region implements Serializable {
 		return courier;
 	}
 
-
-
 	public void setCourier(Set<Courier> courier) {
 		this.courier = courier;
 	}
-
-
 
 	public Long getId() {
 		return id;

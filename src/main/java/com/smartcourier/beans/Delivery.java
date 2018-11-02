@@ -92,6 +92,8 @@ public class Delivery implements Serializable {
     @JsonIgnore
 	private Courier courier;
     
+    private Integer type;
+    
 	private static final long serialVersionUID = 1L;
 
 	public Delivery() {
@@ -122,6 +124,12 @@ public class Delivery implements Serializable {
 	}
 	public void setCourier(Courier courier) {
 		this.courier = courier;
+	}
+	public Integer getType() {
+		return type;
+	}
+	public void setType(Integer type) {
+		this.type = type;
 	}
 	
 	

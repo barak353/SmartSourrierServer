@@ -71,6 +71,7 @@ public class CourierController {
 		Courier courier = courierDao.findOne(courierId);
 		Delivery delivery = deliveryDao.findOne(deliveryId);
 		if(courier != null && delivery != null){
+			delivery.setType(1);//: Deliveries were distribute by the algorithm (Or manually by the clients) to a courier but the courier has has not yet confirmed that he is willing to distribute them.
 			delivery.setCourier(courier);
 			Delivery savedDelivery = deliveryDao.save(delivery);
 			return savedDelivery;

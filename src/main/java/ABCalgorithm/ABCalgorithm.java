@@ -11,28 +11,25 @@ import com.smartcourier.beans.Region;
 import com.smartcourier.controllers.DeliveryController;
 
 public class ABCalgorithm {
-	
+	//This algorithm is executing per region.
 
 	int runtime = 30;  /*Algorithm can be run many times in order to see its robustness*/
 	int maxCycle = 2500; /*The number of cycles for foraging {a stopping criteria}*/
 	ArrayList<Distribution> distributions = new ArrayList<Distribution>(10);
 	Region region;
-	public void initial(Region region)
+	ArrayList<Courier> CouriersInRegion;
+	ArrayList<Delivery> deliveriesInRegion;
+	public void initial(Region region, ArrayList<Delivery> deliveriesToDistributeInRegion)
 	{
-			this.region = region;
-			Set<Courier> couriersInRegion = region.getCourier();
-	        // Iterating over hash set items 
-	        Iterator<Courier> i = couriersInRegion.iterator(); 
-	        while (i.hasNext()) 
-	            System.out.println(i.next()); 
-		/*for( int i = 0; i < distributions.size() ; i++){
-			Distribution distribution = new Distribution();
-			for( Delivery delivery: region.getDelivery() ){
-				delivery.setCourier(courier);
-			}
-			distributions.add(distribution);
-			}*/
-		}
+		//Initialize objects for the algoritm.
+		this.region = region;
+		this.CouriersInRegion = new ArrayList<Courier>(region.getCourier());
+		this.deliveriesInRegion = new ArrayList<Delivery>(region.getDelivery());
+		
+		//Associating each delivery with a random courier in that region
+		
+
+	}
 	
 	public void SendEmployedBees()
 	{
@@ -59,13 +56,13 @@ public class ABCalgorithm {
 	}
 
 	
-	public void runABCalgorithm(Region region)
+	public void runABCalgorithm(Region region, ArrayList<Delivery> deliveriesToDistributeInRegion)
 	{
 		int iter=0;
 		int run=0;
 		for(run=0; run < runtime; run++)
 		{
-			initial(region);//Initialize each distribution's fitness with a random value.
+			initial(region,deliveriesToDistributeInRegion);//Initialize each distribution's fitness with a random value.
 			MemorizeBestSource();//save the best distribution's value.
 			for (iter=0; iter < maxCycle; iter++)
 			    { 

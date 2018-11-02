@@ -1,5 +1,6 @@
 package com.smartcourier.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,20 +59,16 @@ public class RegionController {
 	public Region addDeliveryToRegion(@PathVariable(value = "regionId") Long regionId, @RequestBody Delivery delivery) {
 		Region region = regionDao.findOne(regionId);
 		if(region != null){
-			//regionDao.delete(currentRegion);
-			//deliveryDao.save(delivery);
-			//deliveryDao.setRegion(currentRegion);
 			delivery.setRegion(region);
+			delivery.setType(0);//Deliveries that have not yet been assigned to a courier because they have not yet been distributed by the algorithm.
 			deliveryDao.save(delivery);
 			Region savedRegion = regionDao.findOne(regionId);
-			//savedDelivery.setRegion(region);
-			//Delivery savedDelivery = deliveryDao.save(delivery);
-			//region.getDelivery().add(savedDelivery);
-			//regionDao.delete(region);
-			//regionDao.save(savedDelivery);
-			if( savedRegion.getDelivery().size()  > savedRegion.getThreshold() ) //If the number of deliveries in this region is higher then the region threshold, then run the distribution algorithm.
-				beeColony.runABCalgorithm(savedRegion);
-			//region = regionDao.findOne(regionId);
+			if( savedRegion.getDelivery().size()  > savedRegion.getThreshold() ){ //If the number of deliveries in this region is higher then the region threshold, then run the distribution algorithm.
+				 ArrayList<Delivery> deliveriesToDistributeInRegion = new ArrayList<Delivery>(deliveryDao.findByRegionAndType(savedRegion,0));
+			     deliveriesToDistributeInRegion.addAll((ArrayList<Delivery>) deliveryDao.findByRegionAndType(savedRegion,1));
+				beeColony.runABCalgorithm(savedRegion, deliveriesToDistributeInRegion);
+				
+			}
 			return savedRegion;
 		} else{
 			return null;
