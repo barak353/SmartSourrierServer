@@ -59,6 +59,8 @@ public class Courier implements Serializable {
 	@ManyToMany(mappedBy = "courier")
 	private Set<Region> region = new HashSet<>();
     */
+	@ManyToMany(mappedBy = "courier")
+	private Set<Region> region = new HashSet<>();
 	
 	// The 'mappedBy = "courier"' attribute specifies that
 	// the 'private Courier courier;' field in delivery owns the
@@ -86,8 +88,18 @@ public class Courier implements Serializable {
 		this.region = region;
 	}*/
 
+	
+	
 	public User getUser() {
 		return user;
+	}
+
+	public Set<Region> getRegion() {
+		return region;
+	}
+
+	public void setRegion(Set<Region> region) {
+		this.region = region;
 	}
 
 	public void setUser(User user) {

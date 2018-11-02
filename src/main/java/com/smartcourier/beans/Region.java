@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
  * Entity implementation class for Entity: Region
  *
  */
+/**
+ * @author User
+ *
+ */
 @Entity
 @Table(name="Region", 
 uniqueConstraints=
@@ -35,6 +39,8 @@ public class Region implements Serializable {
         )
 	private List<Delivery> delivery;
 
+
+*/
 	@ManyToMany(cascade = { 
 		    CascadeType.PERSIST, 
 		    CascadeType.MERGE
@@ -44,7 +50,6 @@ public class Region implements Serializable {
 		    inverseJoinColumns = @JoinColumn(name = "courier_id")
 		)
 	private Set<Courier> courier = new HashSet<>();
-*/
 	
 	// The 'mappedBy = "region"' attribute specifies that
 	// the 'private Region region;' field in delivery owns the
@@ -70,6 +75,19 @@ public class Region implements Serializable {
 		threshold = 10; // The default is that the distribution algorithm will run on this region if this region have more then 10 deliveries from type 0 and type 1.
 	}
    
+	
+	public Set<Courier> getCourier() {
+		return courier;
+	}
+
+
+
+	public void setCourier(Set<Courier> courier) {
+		this.courier = courier;
+	}
+
+
+
 	public Long getId() {
 		return id;
 	}
