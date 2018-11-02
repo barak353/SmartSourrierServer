@@ -5,6 +5,7 @@ import java.lang.String;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Entity implementation class for Entity: Delivery
@@ -84,9 +85,13 @@ public class Delivery implements Serializable {
 	// lazily fetch the owner
 	
     @ManyToOne(fetch=FetchType.LAZY) 
-    @JsonBackReference
+    @JsonIgnore
 	private Region region;
 		
+    @ManyToOne(fetch=FetchType.LAZY) 
+    @JsonIgnore
+	private Courier courier;
+    
 	private static final long serialVersionUID = 1L;
 
 	public Delivery() {
@@ -111,6 +116,12 @@ public class Delivery implements Serializable {
 	}
 	public void setRegion(Region region) {
 		this.region = region;
+	}
+	public Courier getCourier() {
+		return courier;
+	}
+	public void setCourier(Courier courier) {
+		this.courier = courier;
 	}
 	
 	

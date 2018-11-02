@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.smartcourier.beans.Delivery;
+import com.smartcourier.beans.Region;
 import com.smartcourier.dao.CourierDao;
 import com.smartcourier.dao.DeliveryDao;
 import io.swagger.annotations.Api;
@@ -77,6 +78,7 @@ public class DeliveryController {
 		return delivery;
 	}
 	
+
 	/*@ApiOperation(value="Delete delivery", response= Iterable.class)
 	@DeleteMapping("/delete/{courierId}/{deliveryId}")
 	public Boolean deleteDelivery(@PathVariable(value = "courierId") Long courierId, @PathVariable(value = "deliveryId") Long deliveryId) {

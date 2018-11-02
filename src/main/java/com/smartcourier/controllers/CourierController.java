@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.smartcourier.beans.Courier;
+import com.smartcourier.beans.Delivery;
 import com.smartcourier.beans.User;
 import com.smartcourier.dao.CourierDao;
+import com.smartcourier.dao.DeliveryDao;
 import com.smartcourier.dao.AppDao;
 
 import io.swagger.annotations.Api;
@@ -34,6 +36,9 @@ public class CourierController {
 	@Autowired
 	CourierDao courierDao;
 
+	@Autowired
+	DeliveryDao deliveryDao;
+	
 	@ApiOperation(value="Get courier", response= Iterable.class)
 	@GetMapping("/{courierId}")
 	public Courier getCourierById(@PathVariable(value = "courierId") Long courierId) {
@@ -59,6 +64,20 @@ public class CourierController {
 		}
 		return false;
 	}
+	
+	@ApiOperation(value="Update delivery", response= Iterable.class)
+	@GetMapping("/update/{deliveryId}/{courierId}")
+	public Delivery assignDeliveryToCourier(@PathVariable(value = "deliveryId") Long deliveryId, @PathVariable(value = "courierId") Long courierId) {
+		Courier courier = courierDao.findOne(courierId);
+		Delivery delivery = deliveryDao.findOne(deliveryId);
+		if(courier != null && delivery != null){
+			delivery.setCourier(courier);
+			Delivery savedDelivery = deliveryDao.save(delivery);
+			return savedDelivery;
+		} else{
+			return null;
+		}
+	}	
 	
 	/*@ApiOperation(value="Delete courier", response= Iterable.class)
 	@DeleteMapping("/delete/{courierId}")

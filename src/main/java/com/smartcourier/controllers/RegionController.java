@@ -55,14 +55,15 @@ public class RegionController {
 	
 	@ApiOperation(value="Update region", response= Iterable.class)//Please use this to create new delivery (because every delivery have a region).
 	@PutMapping("/update/{regionId}")
-	public Delivery addDeliveryToRegion(@PathVariable(value = "regionId") Long regionId, @RequestBody Delivery delivery) {
+	public Region addDeliveryToRegion(@PathVariable(value = "regionId") Long regionId, @RequestBody Delivery delivery) {
 		Region region = regionDao.findOne(regionId);
 		if(region != null){
 			//regionDao.delete(currentRegion);
 			//deliveryDao.save(delivery);
 			//deliveryDao.setRegion(currentRegion);
 			delivery.setRegion(region);
-			Delivery savedDelivery = deliveryDao.save(delivery);
+			deliveryDao.save(delivery);
+			Region savedRegion = regionDao.findOne(regionId);
 			//savedDelivery.setRegion(region);
 			//Delivery savedDelivery = deliveryDao.save(delivery);
 			//region.getDelivery().add(savedDelivery);
@@ -71,12 +72,11 @@ public class RegionController {
 			//if( currentRegion.getDelivery().size()  > currentRegion.getThreshold() ) //If the number of deliveries in this region is higher then the region threshold, then run the distribution algorithm.
 			//	beeColony.runABCalgorithm(currentRegion);
 			//region = regionDao.findOne(regionId);
-			return savedDelivery;
+			return savedRegion;
 		} else{
 			return null;
 		}
 	}
-	
 	
 	/*@ApiOperation(value="Update region", response= Iterable.class)//Please use this to create new delivery (because every delivery have a region).
 	@PutMapping("/update/{regionId}/{courierId}")

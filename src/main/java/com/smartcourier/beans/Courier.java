@@ -16,6 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 /**
  * Entity implementation class for Entity: Courier
  *
@@ -27,7 +29,7 @@ public class Courier implements Serializable {
 	   
 	@Id
 	@GeneratedValue
-	private Long courier_id;
+	private Long id;
 	private String email;
 	private String phone;
 	private String preferredArea;
@@ -38,8 +40,13 @@ public class Courier implements Serializable {
 	@OneToOne(mappedBy = "courier", fetch = FetchType.LAZY)
 	private User user;
 	
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="courier")
+    //@JsonManagedReference
+	private List<Delivery> delivery;
+	
+	
 	/*@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "courier_id")
+    @JoinColumn(name = "id")
 	private List<Salary> salary;*/
 	
     /*@OneToMany(
@@ -57,8 +64,8 @@ public class Courier implements Serializable {
 	// the 'private Courier courier;' field in delivery owns the
 	// relationship (i.e. contains the foreign key for the query to
 	// find all deliveries for a courier.
-	@OneToMany(mappedBy = "region")
-	private List<Delivery> delivery;
+	//@OneToMany(mappedBy = "region")
+	//private List<Delivery> delivery;
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -79,14 +86,6 @@ public class Courier implements Serializable {
 		this.region = region;
 	}*/
 
-	public Long getCourier_id() {
-		return courier_id;
-	}
-
-	public void setCourier_id(Long courier_id) {
-		this.courier_id = courier_id;
-	}
-
 	public User getUser() {
 		return user;
 	}
@@ -100,11 +99,11 @@ public class Courier implements Serializable {
 	}  
 	 
 	public Long getId() {
-		return this.courier_id;
+		return this.id;
 	}
 
-	public void setId(Long courier_id) {
-		this.courier_id = courier_id;
+	public void setId(Long id) {
+		this.id = id;
 	}   
 	public String getEmail() {
 		return this.email;
