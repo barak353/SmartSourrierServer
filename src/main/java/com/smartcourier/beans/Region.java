@@ -7,6 +7,8 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 /**
  * Entity implementation class for Entity: Region
  *
@@ -14,47 +16,52 @@ import javax.persistence.*;
 @Entity
 @Table(name="Region", 
 uniqueConstraints=
-@UniqueConstraint(columnNames={"region_id"})
+@UniqueConstraint(columnNames={"id"})
 )
 public class Region implements Serializable {
 
 	@Id
 	@GeneratedValue 
 	//DB's and algorithm's details
-	private Long region_id;
+	private Long id;
 	private String regionName;
 	private Integer threshold;//Inside createDelivery method in DeliveryController class, the threshold of the region of the created delivery will be compared with the number of the deliveries in that region. f the threshold has been exceeded, then the distribution algorithm will be called on that region.
-	
+	/*
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "delivery_id")
+    @OneToMany(
+            mappedBy = "region", 
+            cascade = CascadeType.ALL, 
+            orphanRemoval = true
+        )
 	private List<Delivery> delivery;
 
 	@ManyToMany(cascade = { 
 		    CascadeType.PERSIST, 
 		    CascadeType.MERGE
 		})
-		@JoinTable(name = "region_courier",
+	@JoinTable(name = "region_courier",
 		    joinColumns = @JoinColumn(name = "region_id"),
 		    inverseJoinColumns = @JoinColumn(name = "courier_id")
 		)
 	private Set<Courier> courier = new HashSet<>();
+*/
+	
+	// The 'mappedBy = "region"' attribute specifies that
+	// the 'private Region region;' field in delivery owns the
+	// relationship (i.e. contains the foreign key for the query to
+	// find all deliveries for a region.
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="region")
+    @JsonManagedReference
+	private List<Delivery> delivery;
+	
 
-	public Long getRegion_id() {
-		return region_id;
-	}
-
-	public void setRegion_id(Long region_id) {
-		this.region_id = region_id;
-	}
-
-	public Set<Courier> getCourier() {
+	/*public Set<Courier> getCourier() {
 		return courier;
 	}
 
 	public void setCourier(Set<Courier> courier) {
 		this.courier = courier;
-	}
+	}*/
 
 	private static final long serialVersionUID = 1L;
 
@@ -64,11 +71,11 @@ public class Region implements Serializable {
 	}
    
 	public Long getId() {
-		return region_id;
+		return id;
 	}
 
-	public void setId(Long region_id) {
-		this.region_id = region_id;
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 	public String getRegionName() {
@@ -94,5 +101,15 @@ public class Region implements Serializable {
 	public void setDelivery(List<Delivery> delivery) {
 		this.delivery = delivery;
 	}
+
+	
+	
+	/*public List<Delivery> getDelivery() {
+		return delivery;
+	}
+
+	public void setDelivery(List<Delivery> delivery) {
+		this.delivery = delivery;
+	}*/
 	
 }

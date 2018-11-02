@@ -3,6 +3,7 @@ package ABCalgorithm;
 import java.util.ArrayList;
 
 import com.smartcourier.beans.Delivery;
+import com.smartcourier.beans.Region;
 import com.smartcourier.controllers.DeliveryController;
 
 public class ABCalgorithm {
@@ -10,9 +11,12 @@ public class ABCalgorithm {
 
 	int runtime = 30;  /*Algorithm can be run many times in order to see its robustness*/
 	int maxCycle = 2500; /*The number of cycles for foraging {a stopping criteria}*/
-
-	public void initial()
+	int numOfDistribution = 100;
+	Region region;
+	public void initial(Region region)
 	{
+		this.region = region;	
+		//ArrayList<Delivery> deliveries= (ArrayList<Delivery>) region.getDelivery();
 		
 		
 	}
@@ -42,13 +46,13 @@ public class ABCalgorithm {
 	}
 
 	
-	public void runABCalgorithm()
+	public void runABCalgorithm(Region region)
 	{
 		int iter=0;
 		int run=0;
 		for(run=0; run < runtime; run++)
 		{
-			initial();//Initialize each distribution's fitness with a random value.
+			initial(region);//Initialize each distribution's fitness with a random value.
 			MemorizeBestSource();//save the best distribution's value.
 			for (iter=0; iter < maxCycle; iter++)
 			    { 

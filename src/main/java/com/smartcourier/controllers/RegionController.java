@@ -16,6 +16,7 @@ import com.smartcourier.beans.Courier;
 import com.smartcourier.beans.Delivery;
 import com.smartcourier.beans.Region;
 import com.smartcourier.dao.CourierDao;
+import com.smartcourier.dao.DeliveryDao;
 import com.smartcourier.dao.RegionDao;
 
 import ABCalgorithm.ABCalgorithm;
@@ -36,6 +37,9 @@ public class RegionController {
 	@Autowired
 	CourierDao courierDao;
 		
+	@Autowired
+	DeliveryDao deliveryDao;
+	
 	@GetMapping("/getAll")
 	public List<Region> getAllSalary(){
 		return regionDao.findAll();
@@ -51,22 +55,30 @@ public class RegionController {
 	
 	@ApiOperation(value="Update region", response= Iterable.class)//Please use this to create new delivery (because every delivery have a region).
 	@PutMapping("/update/{regionId}")
-	public Region addDeliveryToRegion(@PathVariable(value = "regionId") Long regionId, @RequestBody Delivery delivery) {
-		Region currentRegion = regionDao.findOne(regionId);
-		if(currentRegion != null){
-			currentRegion.getDelivery().add(delivery);
-			regionDao.save(currentRegion);
-			if( currentRegion.getDelivery().size()  > currentRegion.getThreshold() ) //If the number of deliveries in this region is higher then the region threshold, then run the distribution algorithm.
-				beeColony.runABCalgorithm();
-			return currentRegion;
-
+	public Delivery addDeliveryToRegion(@PathVariable(value = "regionId") Long regionId, @RequestBody Delivery delivery) {
+		Region region = regionDao.findOne(regionId);
+		if(region != null){
+			//regionDao.delete(currentRegion);
+			//deliveryDao.save(delivery);
+			//deliveryDao.setRegion(currentRegion);
+			delivery.setRegion(region);
+			Delivery savedDelivery = deliveryDao.save(delivery);
+			//savedDelivery.setRegion(region);
+			//Delivery savedDelivery = deliveryDao.save(delivery);
+			//region.getDelivery().add(savedDelivery);
+			//regionDao.delete(region);
+			//regionDao.save(savedDelivery);
+			//if( currentRegion.getDelivery().size()  > currentRegion.getThreshold() ) //If the number of deliveries in this region is higher then the region threshold, then run the distribution algorithm.
+			//	beeColony.runABCalgorithm(currentRegion);
+			//region = regionDao.findOne(regionId);
+			return savedDelivery;
 		} else{
 			return null;
 		}
 	}
 	
 	
-	@ApiOperation(value="Update region", response= Iterable.class)//Please use this to create new delivery (because every delivery have a region).
+	/*@ApiOperation(value="Update region", response= Iterable.class)//Please use this to create new delivery (because every delivery have a region).
 	@PutMapping("/update/{regionId}/{courierId}")
 	public Region addCourierToRegion(@PathVariable(value = "regionId") Long regionId, @PathVariable(value = "courierId") Long couriderId) {
 		Region currentRegion = regionDao.findOne(regionId);
@@ -78,7 +90,7 @@ public class RegionController {
 		} else{
 			return null;
 		}
-	}
+	}*/
 	
 	@ApiOperation(value="Delete region", response= Iterable.class)
 	@DeleteMapping("/delete/{regionId}")
@@ -95,4 +107,5 @@ public class RegionController {
 		} else{
 			return false;
 		}
-	}}
+	}
+	}

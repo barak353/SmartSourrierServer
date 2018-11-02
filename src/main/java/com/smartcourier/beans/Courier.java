@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -41,17 +42,28 @@ public class Courier implements Serializable {
     @JoinColumn(name = "courier_id")
 	private List<Salary> salary;*/
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "courier_id")
+    /*@OneToMany(
+            mappedBy = "courier", 
+            cascade = CascadeType.ALL, 
+            orphanRemoval = true
+        )
 	private List<Delivery> delivery;
 	
 	@ManyToMany(mappedBy = "courier")
 	private Set<Region> region = new HashSet<>();
-    
+    */
+	
+	// The 'mappedBy = "courier"' attribute specifies that
+	// the 'private Courier courier;' field in delivery owns the
+	// relationship (i.e. contains the foreign key for the query to
+	// find all deliveries for a courier.
+	@OneToMany(mappedBy = "region")
+	private List<Delivery> delivery;
+	
 	private static final long serialVersionUID = 1L;
 	
 	
-	public List<Delivery> getDelivery() {
+	/*public List<Delivery> getDelivery() {
 		return delivery;
 	}
 
@@ -65,7 +77,7 @@ public class Courier implements Serializable {
 
 	public void setRegion(Set<Region> region) {
 		this.region = region;
-	}
+	}*/
 
 	public Long getCourier_id() {
 		return courier_id;
@@ -122,7 +134,17 @@ public class Courier implements Serializable {
 
 	public void setPo(String po) {
 		this.po = po;
+	}
+
+	public List<Delivery> getDelivery() {
+		return delivery;
+	}
+
+	public void setDelivery(List<Delivery> delivery) {
+		this.delivery = delivery;
 	}   
+	
+	
 	
 	/*public List<Salary> getSalary() {
 		return salary;

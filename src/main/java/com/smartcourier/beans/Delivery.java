@@ -4,8 +4,14 @@ import java.io.Serializable;
 import java.lang.String;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 /**
  * Entity implementation class for Entity: Delivery
+ *
+ */
+/**
+ * @author User
  *
  */
 /**
@@ -28,8 +34,10 @@ public class Delivery implements Serializable {
 	@Id
 	@GeneratedValue 
 	//DB's and algorithm's details
-	private Long delivery_id;
-	private Integer type;//There are 4 types od deliveries: Type0, Type1, Type 2 and Type 3 as described in section 3.6.
+	private Long id;
+	private String name;
+
+	/*private Integer type;//There are 4 types of deliveries: Type0, Type1, Type 2 and Type 3 as described in section 3.6.
 	private Double lat;
 	private Double lng;
 	private String subarea;
@@ -51,35 +59,70 @@ public class Delivery implements Serializable {
 	private String private_house;
 	private String signed;
 	private String pasted_on_door;
-	private String text;
+	private String text;*/
 	//Salaray's details
 	//private String monthInYear; 
 	//private String price;
 	
-	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-	@JoinColumn(name = "courier_id")
-  	@PrimaryKeyJoinColumn
+    /*@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "courier_id")
+	private Courier Courier;
+	
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "region_id")
+	private Region region;*/
+	
+	// Specifies the Delivery table does not contain an COURIER column, but 
+	// an COURIER_ID column with a foreign key. And creates a join to
+	// lazily fetch the owner
+	/*@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="COURIER_ID")
 	private Courier courier;
+	*/
+	// Specifies the Delivery table does not contain an owner REGION, but 
+	// an REGION_ID column with a foreign key. And creates a join to
+	// lazily fetch the owner
 	
-	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-	@JoinColumn(name = "region_id")
-  	@PrimaryKeyJoinColumn
+    @ManyToOne(fetch=FetchType.LAZY) 
+    @JsonBackReference
 	private Region region;
-	
+		
 	private static final long serialVersionUID = 1L;
 
 	public Delivery() {
 		super();
 	}   
 	public Long getId() {
-		return this.delivery_id;
+		return this.id;
 	}
 
-	public void setId(Long delivery_id) {
-		this.delivery_id = delivery_id;
+	public void setId(Long id) {
+		this.id = id;
 	}   
+		
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public Region getRegion() {
+		return region;
+	}
+	public void setRegion(Region region) {
+		this.region = region;
+	}
 	
-	/*public String getMonthInYear() {
+	
+	
+	/*public Integer getType() {
+		return type;
+	}
+	public void setType(Integer type) {
+		this.type = type;
+	}
+	
+	public String getMonthInYear() {
 		return monthInYear;
 	}
 	public void setMonthInYear(String monthInYear) {
@@ -95,7 +138,7 @@ public class Delivery implements Serializable {
 	}   
 	*/
 	
-	public String getAddress() {
+	/*public String getAddress() {
 		return this.address;
 	}
 
@@ -112,12 +155,7 @@ public class Delivery implements Serializable {
 		this.phone = phone;
 	}
 	
-	public Integer getType() {
-		return type;
-	}
-	public void setType(Integer type) {
-		this.type = type;
-	}
+
 	public Double getLat() {
 		return lat;
 	}
@@ -232,18 +270,33 @@ public class Delivery implements Serializable {
 	public void setText(String text) {
 		this.text = text;
 	}
-
-	/*public Courier getCourier() {
+	public Courier getCourier() {
 		return courier;
 	}
 	public void setCourier(Courier courier) {
 		this.courier = courier;
-	}*/
+	}
 	public Region getRegion() {
 		return region;
 	}
 	public void setRegion(Region region) {
 		this.region = region;
 	}
+
+	
+	
+	
+	/*public Courier getCourier() {
+		return courier;
+	}
+	public void setCourier(Courier courier) {
+		this.courier = courier;
+	}*/
+	/*public Region getRegion() {
+		return region;
+	}
+	public void setRegion(Region region) {
+		this.region = region;
+	}*/
    
 }
