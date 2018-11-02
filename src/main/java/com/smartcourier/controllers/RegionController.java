@@ -69,8 +69,8 @@ public class RegionController {
 			//region.getDelivery().add(savedDelivery);
 			//regionDao.delete(region);
 			//regionDao.save(savedDelivery);
-			//if( currentRegion.getDelivery().size()  > currentRegion.getThreshold() ) //If the number of deliveries in this region is higher then the region threshold, then run the distribution algorithm.
-			//	beeColony.runABCalgorithm(currentRegion);
+			if( savedRegion.getDelivery().size()  > savedRegion.getThreshold() ) //If the number of deliveries in this region is higher then the region threshold, then run the distribution algorithm.
+				beeColony.runABCalgorithm(savedRegion);
 			//region = regionDao.findOne(regionId);
 			return savedRegion;
 		} else{
@@ -78,19 +78,19 @@ public class RegionController {
 		}
 	}
 	
-	/*@ApiOperation(value="Update region", response= Iterable.class)//Please use this to create new delivery (because every delivery have a region).
+	@ApiOperation(value="Update region", response= Iterable.class)//Please use this to create new delivery (because every delivery have a region).
 	@PutMapping("/update/{regionId}/{courierId}")
-	public Region addCourierToRegion(@PathVariable(value = "regionId") Long regionId, @PathVariable(value = "courierId") Long couriderId) {
-		Region currentRegion = regionDao.findOne(regionId);
-		if(currentRegion != null){
-			Courier courier = courierDao.findOne(couriderId);
-			currentRegion.getCourier().add(courier);
-			regionDao.save(currentRegion);
-			return currentRegion;
+	public Region assignCourierToRegion(@PathVariable(value = "regionId") Long regionId, @PathVariable(value = "courierId") Long couriderId) {
+		Region region = regionDao.findOne(regionId);
+		Courier courier = courierDao.findOne(couriderId);
+		if(region != null && courier != null){
+			region.getCourier().add(courier);
+			regionDao.save(region);
+			return region;
 		} else{
 			return null;
 		}
-	}*/
+	}
 	
 	@ApiOperation(value="Delete region", response= Iterable.class)
 	@DeleteMapping("/delete/{regionId}")

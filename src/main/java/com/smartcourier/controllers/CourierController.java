@@ -66,7 +66,7 @@ public class CourierController {
 	}
 	
 	@ApiOperation(value="Update delivery", response= Iterable.class)
-	@GetMapping("/update/{deliveryId}/{courierId}")
+	@GetMapping("/update/{courierId}/{deliveryId}")
 	public Delivery assignDeliveryToCourier(@PathVariable(value = "deliveryId") Long deliveryId, @PathVariable(value = "courierId") Long courierId) {
 		Courier courier = courierDao.findOne(courierId);
 		Delivery delivery = deliveryDao.findOne(deliveryId);

@@ -1,6 +1,9 @@
 package ABCalgorithm;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import com.smartcourier.beans.Delivery;
 import com.smartcourier.beans.Region;
 
 public class Distribution {
@@ -8,10 +11,7 @@ public class Distribution {
 	
 	Double[] factors;
 	
-	ArrayList<Division> divisions;
-	
-	Region region;
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -24,6 +24,8 @@ public class Distribution {
 	public void setFactors(Double[] factors) {
 		this.factors = factors;
 	}
+
+	
 	
 	
 }

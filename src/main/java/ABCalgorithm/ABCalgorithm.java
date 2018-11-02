@@ -1,7 +1,11 @@
 package ABCalgorithm;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
+import com.smartcourier.beans.Courier;
 import com.smartcourier.beans.Delivery;
 import com.smartcourier.beans.Region;
 import com.smartcourier.controllers.DeliveryController;
@@ -11,20 +15,29 @@ public class ABCalgorithm {
 
 	int runtime = 30;  /*Algorithm can be run many times in order to see its robustness*/
 	int maxCycle = 2500; /*The number of cycles for foraging {a stopping criteria}*/
-	int numOfDistribution = 100;
+	ArrayList<Distribution> distributions = new ArrayList<Distribution>(10);
 	Region region;
 	public void initial(Region region)
 	{
-		this.region = region;	
-		//ArrayList<Delivery> deliveries= (ArrayList<Delivery>) region.getDelivery();
-		
-		
-	}
+			this.region = region;
+			Set<Courier> couriersInRegion = region.getCourier();
+	        // Iterating over hash set items 
+	        Iterator<Courier> i = couriersInRegion.iterator(); 
+	        while (i.hasNext()) 
+	            System.out.println(i.next()); 
+		/*for( int i = 0; i < distributions.size() ; i++){
+			Distribution distribution = new Distribution();
+			for( Delivery delivery: region.getDelivery() ){
+				delivery.setCourier(courier);
+			}
+			distributions.add(distribution);
+			}*/
+		}
 	
 	public void SendEmployedBees()
 	{
-		DeliveryController deliveryController = new DeliveryController();
-		ArrayList<Delivery> allDeliveries = (ArrayList<Delivery>) deliveryController.getAllDeliverys();
+		//DeliveryController deliveryController = new DeliveryController();
+		//ArrayList<Delivery> allDeliveries = (ArrayList<Delivery>) deliveryController.getAllDeliverys();
 	}
 	
 	public void CalculateProbabilities(){
