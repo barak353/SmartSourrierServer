@@ -14,16 +14,17 @@ import com.smartcourier.controllers.DeliveryController;
 public class ABCalgorithm {
 	//This algorithm is executing per region.
 
-	int runtime = 30;  /*Algorithm can be run many times in order to see its robustness*/
-	int maxCycle = 2500; /*The number of cycles for foraging {a stopping criteria}*/
-	int NUM_OF_DISTRIBUTION_IN_REGION = 10;
-	Distribution[] distributions;
-	Region region;
-	ArrayList<Courier> divisions; //Division correspond to courier.
-	ArrayList<Delivery> deliveriesToDistributeInRegion;//This are the deliveries from type 0 in the region.
+	private int runtime = 30;  /*Algorithm can be run many times in order to see its robustness*/
+	private int maxCycle = 2500; /*The number of cycles for foraging {a stopping criteria}*/
+	private static final int NUM_OF_DISTRIBUTION_IN_REGION = 10;
+	private static final int NUM_OF_FACTORS = 3;
+	private Distribution[] distributions;
+	private Region region;
+	private ArrayList<Delivery> deliveriesToDistributeInRegion;//This are the deliveries from type 0 in the region.
 	
-	//Initial food sources are produced for all employed bees: Number of distributions are generated randomly in each region
-	//(Associating each delivery with a random courier in that region). Time complexity: O(D+C)⋅NumOfdistributions) =^* O(D).
+	/*Initial food sources are produced for all employed bees: Number of distributions are generated randomly in each region
+	 *(Associating each delivery with a random courier in that region). Time complexity: O(D+C)⋅NumOfdistributions) =* O(D).
+	 */
 	public void initial(Region region, ArrayList<Delivery> deliveriesToDistributeInRegion)
 	{
 		//Initialize objects for the algorithm.
@@ -56,20 +57,37 @@ public class ABCalgorithm {
 		}
 	}
 	
+	/*This method calculate the probabilities for each factor and then calculate the fitness of each distribution. 
+	 * Then finds and stores the distribution with the maximum fitness. Time complexity: 𝑂(𝑁𝑢𝑚𝑂𝑓𝑑𝑖𝑠𝑡𝑟𝑖𝑏𝑢𝑡𝑖𝑜𝑛𝑠∗C)=∗ 𝑂(C).
+	 */
 	public void MemorizeBestSource(){
 		
+		
+		/*for( int index = 0; index < NUM_OF_DISTRIBUTION_IN_REGION; index++){
+			factorsProbabilities[index] = 
+		}*/
 	}
-	
+	/*
+	 * Each employed bee goes to a food source in her memory and determines a closest source, then evaluates its nectar amount and dances in the hive: 
+	 * The fitness of each distribution is being calculated. Time complexity: 𝑂(𝐷^2⋅𝑁𝑢𝑚𝑂𝑓𝑑𝑖𝑠𝑡𝑟𝑖𝑏𝑢𝑡𝑖𝑜𝑛𝑠)=∗𝑂(𝐷^2).
+	 * */
 	public void SendEmployedBees()
 	{
-		
-		//DeliveryController deliveryController = new DeliveryController();
-		//ArrayList<Delivery> allDeliveries = (ArrayList<Delivery>) deliveryController.getAllDeliverys();
+		for(Distribution distribution : distributions){
+			int maxUrgentDeliveriesInDistribution = 0;
+			for(Division division : distribution.getDivisions()){
+				int numberOfUrgentDeliveriesInDivision = 0;
+				for(Delivery delivery: division.getDeliveries()){
+					if(delivery.getIsUrgent() == 1)
+						numberOfUrgentDeliveriesInDivision++;
+				}
+				if(maxUrgentDeliveriesInDistribution < numberOfUrgentDeliveriesInDivision)
+					maxUrgentDeliveriesInDistribution = numberOfUrgentDeliveriesInDivision;
+			}			
+			distribution.factors.put("UrgencyFactor", (double) maxUrgentDeliveriesInDistribution);
+		}
 	}
 	
-	public void CalculateProbabilities(){
-		
-	}
 	
 	public void SendOnlookerBees()
 	{
@@ -81,25 +99,21 @@ public class ABCalgorithm {
 		
 	}
 	
-
-
-	
 	public void runABCalgorithm(Region region, ArrayList<Delivery> deliveriesToDistributeInRegion)
 	{
 		int iter=0;
 		int run=0;
 		for(run=0; run < runtime; run++)
 		{
-			initial(region,deliveriesToDistributeInRegion);//Initialize each distribution's fitness with a random value.
-			MemorizeBestSource();//save the best distribution's value.
+			initial(region,deliveriesToDistributeInRegion);
+			SendEmployedBees();
+			MemorizeBestSource();
 			for (iter=0; iter < maxCycle; iter++)
 			    { 
-				SendEmployedBees();//employed bee phase - artificially employed bee generates a random solution that is a mutant of the original solution and replace it with the current solution if it have higher fitness (solution = distribution), and this is perform for each distribution*/
-				CalculateProbabilities();//This will be called:bee.SendEmployedBees(); and inside it we will call the bee.CalculateProbabilities() function because this function does what the employed foragers should do. More detail: Transfer fitness value to probability (still higher probability is better solution).
-				SendOnlookerBees();//Those bees perform the same operation as employed bees, they will create a mutants from each distribution and will replace his parameters with the tested distribution if it's have higher fitness. 
-				sendScoutBees();//discard an distribution with minimum values for his parameter because we want to keep the random process.
-				MemorizeBestSource();//save in globalMin the parameters of the distribution with the higher fitness.
-			    }
+				SendOnlookerBees(); 
+				sendScoutBees();
+				MemorizeBestSource();
+				}
 		}
         System.out.println("beeColony finished!");
 	}
