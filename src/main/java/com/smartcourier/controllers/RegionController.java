@@ -63,11 +63,10 @@ public class RegionController {
 			delivery.setType(0);//Deliveries that have not yet been assigned to a courier because they have not yet been distributed by the algorithm.
 			deliveryDao.save(delivery);
 			Region savedRegion = regionDao.findOne(regionId);
-			if( savedRegion.getDelivery().size()  > savedRegion.getThreshold() ){ //If the number of deliveries in this region is higher then the region threshold, then run the distribution algorithm.
+			if( ( savedRegion.getDelivery().size()  > savedRegion.getThreshold() ) && ( savedRegion.getCourier().size() > 0 )){ //If the number of deliveries in this region is higher then the region threshold, then run the distribution algorithm.
 				 ArrayList<Delivery> deliveriesToDistributeInRegion = new ArrayList<Delivery>(deliveryDao.findByRegionAndType(savedRegion,0));
 			     deliveriesToDistributeInRegion.addAll((ArrayList<Delivery>) deliveryDao.findByRegionAndType(savedRegion,1));
 				 beeColony.runABCalgorithm(savedRegion, deliveriesToDistributeInRegion);
-				
 			}
 			return savedRegion;
 		} else{

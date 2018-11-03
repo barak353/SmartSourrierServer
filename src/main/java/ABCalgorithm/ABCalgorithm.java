@@ -1,6 +1,7 @@
 package ABCalgorithm;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -47,6 +48,7 @@ public class ABCalgorithm {
 			//For each distribution randomize deliveries from type 0 to the divisions.
 			for(int j = 0; j < deliveriesToDistributeInRegion.size() ;j++){
 				int divisionIndex = (int )(Math.random() * divisions.length); //Randomize number between 1 to number of divisions (couriers) in the region.
+
 				divisions[divisionIndex].getDeliveries().add(deliveriesToDistributeInRegion.get(j));//set delivery to randomized division.
 			}
 			//Set divisions to distribution.
@@ -54,8 +56,13 @@ public class ABCalgorithm {
 		}
 	}
 	
+	public void MemorizeBestSource(){
+		
+	}
+	
 	public void SendEmployedBees()
 	{
+		
 		//DeliveryController deliveryController = new DeliveryController();
 		//ArrayList<Delivery> allDeliveries = (ArrayList<Delivery>) deliveryController.getAllDeliverys();
 	}
@@ -74,9 +81,7 @@ public class ABCalgorithm {
 		
 	}
 	
-	public void MemorizeBestSource(){
-		
-	}
+
 
 	
 	public void runABCalgorithm(Region region, ArrayList<Delivery> deliveriesToDistributeInRegion)

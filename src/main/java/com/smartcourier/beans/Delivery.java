@@ -37,14 +37,16 @@ public class Delivery implements Serializable {
 	//DB's and algorithm's details
 	private Long id;
 	private String name;
-
+	private Integer isUrgent;
+	private Double latitude;
+	private Double longitude;
 	/*private Integer type;//There are 4 types of deliveries: Type0, Type1, Type 2 and Type 3 as described in section 3.6.
 	private Double lat;
 	private Double lng;
 	private String subarea;
 	private String address;
 	private String area;
-	private String urgent;
+
 	//Delivery's details
 	private String claimant;
 	private String name;
@@ -131,8 +133,25 @@ public class Delivery implements Serializable {
 	public void setType(Integer type) {
 		this.type = type;
 	}
+	public Integer getIsUrgent() {
+		return isUrgent;
+	}
+	public void setIsUrgent(Integer isUrgent) {
+		this.isUrgent = isUrgent;
+	}
 	
-	
+	public Double getLatitude() {
+		return latitude;
+	}
+	public void setLatitude(Double latitude) {
+		this.latitude = latitude;
+	}
+	public Double getLongitude() {
+		return longitude;
+	}
+	public void setLongitude(Double longitude) {
+		this.longitude = longitude;
+	}
 	
 	/*public Integer getType() {
 		return type;
@@ -175,18 +194,7 @@ public class Delivery implements Serializable {
 	}
 	
 
-	public Double getLat() {
-		return lat;
-	}
-	public void setLat(Double lat) {
-		this.lat = lat;
-	}
-	public Double getLng() {
-		return lng;
-	}
-	public void setLng(Double lng) {
-		this.lng = lng;
-	}
+
 	public String getSubarea() {
 		return subarea;
 	}
