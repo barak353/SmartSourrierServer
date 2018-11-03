@@ -15,20 +15,43 @@ public class ABCalgorithm {
 
 	int runtime = 30;  /*Algorithm can be run many times in order to see its robustness*/
 	int maxCycle = 2500; /*The number of cycles for foraging {a stopping criteria}*/
-	ArrayList<Distribution> distributions = new ArrayList<Distribution>(10);
+	int NUM_OF_DISTRIBUTION_IN_REGION = 10;
+	Distribution[] distributions;
 	Region region;
-	ArrayList<Courier> CouriersInRegion;
-	ArrayList<Delivery> deliveriesInRegion;
+	ArrayList<Courier> divisions; //Division correspond to courier.
+	ArrayList<Delivery> deliveriesToDistributeInRegion;//This are the deliveries from type 0 in the region.
+	
+	//Initial food sources are produced for all employed bees: Number of distributions are generated randomly in each region
+	//(Associating each delivery with a random courier in that region). Time complexity: O(D+C)⋅NumOfdistributions) =^* O(D).
 	public void initial(Region region, ArrayList<Delivery> deliveriesToDistributeInRegion)
 	{
-		//Initialize objects for the algoritm.
+		//Initialize objects for the algorithm.
 		this.region = region;
-		this.CouriersInRegion = new ArrayList<Courier>(region.getCourier());
-		this.deliveriesInRegion = new ArrayList<Delivery>(region.getDelivery());
-		
+		this.deliveriesToDistributeInRegion = deliveriesToDistributeInRegion;//This are the deliveries from type 0 in the region.
+		//Initialize distributions
+		this.distributions = new Distribution[NUM_OF_DISTRIBUTION_IN_REGION];
+		for(int k = 0; k < NUM_OF_DISTRIBUTION_IN_REGION; k++){
+			this.distributions[k] = new Distribution(region.getCourier().size());
+		}
 		//Associating each delivery with a random courier in that region
-		
-
+		for( int i = 0; i < NUM_OF_DISTRIBUTION_IN_REGION; i++){
+			//Initialize divisions in the distribution
+			Division[] divisions = new Division[region.getCourier().size()];
+			Iterator<Courier> couriersIterator = region.getCourier().iterator();
+			//Associate each division with a courier.
+			for(int k = 0; k < region.getCourier().size(); k++){
+				divisions[k] = new Division();
+				divisions[k].setCourier(couriersIterator.next());
+				divisions[k].getDeliveries().addAll(divisions[k].getCourier().getDelivery());//Add deliveries from type 0 and 1 to courier's deliveries from type 2 and 3.
+			}
+			//For each distribution randomize deliveries from type 0 to the divisions.
+			for(int j = 0; j < deliveriesToDistributeInRegion.size() ;j++){
+				int divisionIndex = (int )(Math.random() * divisions.length); //Randomize number between 1 to number of divisions (couriers) in the region.
+				divisions[divisionIndex].getDeliveries().add(deliveriesToDistributeInRegion.get(j));//set delivery to randomized division.
+			}
+			//Set divisions to distribution.
+			distributions[i].setDivisions(divisions);
+		}
 	}
 	
 	public void SendEmployedBees()

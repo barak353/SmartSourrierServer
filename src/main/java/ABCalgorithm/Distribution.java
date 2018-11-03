@@ -1,16 +1,15 @@
 package ABCalgorithm;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.smartcourier.beans.Delivery;
-import com.smartcourier.beans.Region;
-
 public class Distribution {
 	Long id;
 	
 	Double[] factors;
 	
+	Division[] divisions;
+	
+	public Distribution(int numOfDivisions){
+		this.divisions = new Division[numOfDivisions];
+	}
 
 	public Long getId() {
 		return id;
@@ -24,8 +23,10 @@ public class Distribution {
 	public void setFactors(Double[] factors) {
 		this.factors = factors;
 	}
-
-	
-	
-	
+	public Division[] getDivisions() {
+		return this.divisions;
+	}
+	public void setDivisions(Division[] divisions2) {
+		this.divisions = divisions2;
+	}
 }

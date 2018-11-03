@@ -66,7 +66,7 @@ public class RegionController {
 			if( savedRegion.getDelivery().size()  > savedRegion.getThreshold() ){ //If the number of deliveries in this region is higher then the region threshold, then run the distribution algorithm.
 				 ArrayList<Delivery> deliveriesToDistributeInRegion = new ArrayList<Delivery>(deliveryDao.findByRegionAndType(savedRegion,0));
 			     deliveriesToDistributeInRegion.addAll((ArrayList<Delivery>) deliveryDao.findByRegionAndType(savedRegion,1));
-				beeColony.runABCalgorithm(savedRegion, deliveriesToDistributeInRegion);
+				 beeColony.runABCalgorithm(savedRegion, deliveriesToDistributeInRegion);
 				
 			}
 			return savedRegion;
