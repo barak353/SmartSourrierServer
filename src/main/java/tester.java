@@ -1,9 +1,11 @@
+import ABCalgorithm.ABCalgorithm;
+
 //import com.smartcourier.beans.Customer;
 //import com.smartcourier.dao.CustomerDao;
-//
-//public class tester {
-//
-//	public static void main(String[] args) {
+
+public class tester {
+
+	public static void main(String[] args) {
 //	
 //		CustomerDao customerDao = new CustomerDao();
 //		//public Customer(long customerID, String customerName, String customerAddress, String customerPhonenNumber)
@@ -17,7 +19,7 @@
 ////		customerResponse = customerDao.findCustomerByID(2);
 //		System.out.println(customerResponse.toString());
 //		
-//
-//	}
-//
-//}
+
+	}
+
+}

@@ -56,15 +56,18 @@ public class RegionController {
 	
 	@ApiOperation(value="Update region", response= Iterable.class)//Please use this to create new delivery (because every delivery have a region).
 	@PutMapping("/update/{regionId}")
-	public Region addDeliveryToRegion(@PathVariable(value = "regionId") Long regionId, @RequestBody Delivery delivery) {
+	public Region addDeliveryToRegion(@PathVariable(value = "regionId") Long regionId, @RequestBody Delivery delivery) throws Exception 
+	{
 		Region region = regionDao.findOne(regionId);
-		if(region != null){
+		if(region != null)
+		{
 			delivery.setRegion(region);
 			delivery.setType(0);//Deliveries that have not yet been assigned to a courier because they have not yet been distributed by the algorithm.
 			deliveryDao.save(delivery);
 			Region savedRegion = regionDao.findOne(regionId);
-			if( ( savedRegion.getDelivery().size()  > savedRegion.getThreshold() ) && ( savedRegion.getCourier().size() > 0 )){ //If the number of deliveries in this region is higher then the region threshold, then run the distribution algorithm.
-				 ArrayList<Delivery> deliveriesToDistributeInRegion = new ArrayList<Delivery>(deliveryDao.findByRegionAndType(savedRegion,0));
+			if( ( savedRegion.getDelivery().size()  > savedRegion.getThreshold() ) && ( savedRegion.getCourier().size() > 0 )) //If the number of deliveries in this region is higher then the region threshold, then run the distribution algorithm.
+			{
+				ArrayList<Delivery> deliveriesToDistributeInRegion = new ArrayList<Delivery>(deliveryDao.findByRegionAndType(savedRegion,0));
 			     deliveriesToDistributeInRegion.addAll((ArrayList<Delivery>) deliveryDao.findByRegionAndType(savedRegion,1));
 				 beeColony.runABCalgorithm(savedRegion, deliveriesToDistributeInRegion);
 			}
@@ -104,4 +107,29 @@ public class RegionController {
 			return false;
 		}
 	}
+	
+	@ApiOperation(value="Delete delivery", response= Iterable.class)
+	@DeleteMapping("/delete/{regionId}/{deliveryId}")
+	public Boolean deleteRegion(@PathVariable(value = "regionId") Long regionId, @PathVariable(value = "deliveryId") Long deliveryId) {
+		//Region will be deleted only if it have 0 deliveries.
+		Region currentRegion = regionDao.findOne(regionId);
+		if(currentRegion != null)
+		{
+			if(currentRegion.getDelivery().size() > 0)
+			{
+				for(int i = 0; i < currentRegion.getDelivery().size(); i++)
+				{
+					Delivery delivery = currentRegion.getDelivery().get(i);
+					if((long)delivery.getId() == (long)deliveryId)
+					{
+						currentRegion.getDelivery().remove(i);
+						regionDao.save(currentRegion);
+						deliveryDao.delete(delivery);
+						return true;
+					}
+				}
+			}
+		}
+		return false;
 	}
+}

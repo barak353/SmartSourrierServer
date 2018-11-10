@@ -34,7 +34,7 @@ public class AppController {
 	AppDao appDao;
 
 	@ApiOperation(value="login", response= Iterable.class)
-	@PostMapping("/authenticate")
+	@PutMapping("/authenticate")
 	public LoginOut login(@RequestBody LoginIn loginIn) {
 		String username = loginIn.getUsername().toLowerCase();
 		Boolean success = true;
@@ -74,7 +74,7 @@ public class AppController {
 	}
 	
 	@ApiOperation(value="Create user", response= Iterable.class)
-	@PutMapping("/user/create")//Put is used for creating resource.
+	@PostMapping("/user/create")
 	public User createUser(@RequestBody User user) {
 		if (user != null){
 			String username = user.getUsername();
@@ -114,7 +114,7 @@ public class AppController {
 			appDao.delete(user);
 			return true;
 		} else{
-			return false;
+			return true;
 		}
 	}
 }
