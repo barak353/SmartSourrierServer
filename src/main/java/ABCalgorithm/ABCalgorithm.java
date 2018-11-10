@@ -17,7 +17,7 @@ import com.smartcourier.controllers.DeliveryController;
 public class ABCalgorithm {
 	//This algorithm is executing per region.
 
-	private int runtime = 30;  /*Algorithm can be run many times in order to see its robustness*/
+	private int runtime = 3;  /*Algorithm can be run many times in order to see its robustness*/
 	private int maxCycle = 2500; /*The number of cycles for foraging {a stopping criteria}*/
 	private static final int NUM_OF_DISTRIBUTION_IN_REGION = 10;
 	private static final int NUM_OF_FACTORS = 3;
@@ -32,6 +32,8 @@ public class ABCalgorithm {
 	 */
 	public void initial(Region region, ArrayList<Delivery> deliveriesToDistributeInRegion) throws Exception
 	{
+		maxDriveDistanceBetweenPairDeliveriesInRegion = 0.0;
+		totalNumOfUrgentDeliveriesInDistribution = 0.0;
 		//Initialize objects for the algorithm.
 		this.region = region;
 		this.deliveriesToDistributeInRegion = deliveriesToDistributeInRegion;//This are the deliveries from type 0 in the region.
@@ -52,31 +54,37 @@ public class ABCalgorithm {
 			{
 				divisions[k] = new Division();
 				divisions[k].setCourier(couriersIterator.next());
-				divisions[k].getDeliveries().addAll(divisions[k].getCourier().getDelivery());//Add deliveries from type 0 and 1 to courier's deliveries from type 2 and 3.
+				/*for(Delivery delivery :divisions[k].getCourier().getDelivery())
+					if(delivery.getType() < 2)
+						divisions[k].getDeliveries().add(delivery);//Add deliveries from type 2 to courier's division.
+						Not needed i already did it!*/
 			}
-			//For each distribution randomize deliveries from type 0 to the divisions.
+			//For each distribution randomize deliveries from type 0 or 1 to the divisions.
 			for(int j = 0; j < deliveriesToDistributeInRegion.size() ;j++)
 			{
-				if(deliveriesToDistributeInRegion.get(i).getIsUrgent() == 1)
+				if(deliveriesToDistributeInRegion.get(j).getIsUrgent() == 1)
 					totalNumOfUrgentDeliveriesInDistribution++;
 				int divisionIndex = (int )(Math.random() * divisions.length); //Randomize number between 1 to number of divisions (couriers) in the region.
 				divisions[divisionIndex].getDeliveries().add(deliveriesToDistributeInRegion.get(j));//set delivery to randomized division.
-				for(int k = j + 1; k < deliveriesToDistributeInRegion.size(); k++)
-				{
-					Delivery origDelivery = deliveriesToDistributeInRegion.get(j);
-					Delivery destDelivery = deliveriesToDistributeInRegion.get(k); 
-					Double[] orig = {origDelivery.getLatitude(), origDelivery.getLongitude()};
-					Double[] dest = {destDelivery.getLatitude(), destDelivery.getLongitude()};
-					double driveDistance = getDriveDistance(orig, dest);
-					if(maxDriveDistanceBetweenPairDeliveriesInRegion < driveDistance)
-						maxDriveDistanceBetweenPairDeliveriesInRegion = driveDistance;
-				}
 			}
 			//Set divisions to distribution.
 			distributions[i].setDivisions(divisions);
 		}
+		//Find longest driving distance between pair of deliveries in region.
+		for(int j = 0; j < deliveriesToDistributeInRegion.size() ;j++)
+		{
+			for(int k = j + 1; k < deliveriesToDistributeInRegion.size(); k++)
+			{
+				Delivery origDelivery = deliveriesToDistributeInRegion.get(j);
+				Delivery destDelivery = deliveriesToDistributeInRegion.get(k); 
+				Double[] orig = {origDelivery.getLatitude(), origDelivery.getLongitude()};
+				Double[] dest = {destDelivery.getLatitude(), destDelivery.getLongitude()};
+				double driveDistance = getDriveDistance(orig, dest);
+				if(maxDriveDistanceBetweenPairDeliveriesInRegion < driveDistance)
+					maxDriveDistanceBetweenPairDeliveriesInRegion = driveDistance;
+			}
+		}
 	}
-	
 	/*
 	 * Each employed bee goes to a food source in her memory and determines a closest source, then evaluates its nectar amount and dances in the hive: 
 	 * The fitness of each distribution is being calculated. Time complexity: 𝑂(𝐷^2⋅𝑁𝑢𝑚𝑂𝑓𝑑𝑖𝑠𝑡𝑟𝑖𝑏𝑢𝑡𝑖𝑜𝑛𝑠)=∗𝑂(𝐷^2).
@@ -99,7 +107,7 @@ public class ABCalgorithm {
 					if(delivery.getIsUrgent() == 1)
 						numberOfUrgentDeliveriesInDivision++;
 					//DistanceFactor
-					int i = deliveries.indexOf(delivery);
+					int i = deliveries.indexOf(delivery) + 1;
 					for(; i < deliveries.size() ;i++)
 					{
 						Delivery destDelivery = deliveries.get(i);
@@ -112,16 +120,19 @@ public class ABCalgorithm {
 					//LoadFactor (most important)
 					//ToAdd
 				}
-				double numOfPairsOfDeliveriesInDivision = (division.getDeliveries().size() * division.getDeliveries().size() - 1) / 2;//Hand shake lemma;
-				totalAvgsOfTotalDistancesBetweenDeliveriesInDivision += (totalDistancesBetweenDeliveriesInDivision / numOfPairsOfDeliveriesInDivision);
+				double numOfPairsOfDeliveriesInDivision = (division.getDeliveries().size() * (division.getDeliveries().size() - 1) ) / 2;//Hand shake lemma;
+				if(numOfPairsOfDeliveriesInDivision != 0)
+					totalAvgsOfTotalDistancesBetweenDeliveriesInDivision += (totalDistancesBetweenDeliveriesInDivision / numOfPairsOfDeliveriesInDivision);
+				else
+					totalAvgsOfTotalDistancesBetweenDeliveriesInDivision += 0;
 			}
 			double avgOfTotalAvgDistancesInDivision = (totalAvgsOfTotalDistancesBetweenDeliveriesInDivision / distribution.getDivisions().length);
-			factorsProbabilities[1] = 1 - ( avgOfTotalAvgDistancesInDivision / maxDriveDistanceBetweenPairDeliveriesInRegion);
-			factorsProbabilities[3] = 1 - ( maximumNumberOfUrgentDeliveriesInADivision / totalNumOfUrgentDeliveriesInDistribution);
+			factorsProbabilities[0] = 1 - ( avgOfTotalAvgDistancesInDivision / maxDriveDistanceBetweenPairDeliveriesInRegion);
+			factorsProbabilities[2] = 1 - ( maximumNumberOfUrgentDeliveriesInADivision / totalNumOfUrgentDeliveriesInDistribution);
 			//total fitness
 			Double distributionFitness = 0.0;
-			for(int i = 1; i < 3; i++)
-				distributionFitness += factorsProbabilities[i] * (double) i;
+			for(int i = 0; i < 2; i++)
+				distributionFitness += factorsProbabilities[i] * (double) (i + 1);
 			distribution.setFitness(distributionFitness);
 		}
 	}
@@ -169,6 +180,7 @@ public class ABCalgorithm {
 //		Double[] dest = {30.0400, 30.0800};
 
 //		getDriveDistance(orig, dest);
+		//After the algorithm distibute deliveries to couriers we need to change their type to type 2.
 	}
 	
 	private static Double getDriveDistance(Double[] origin, Double[] destination) throws Exception
@@ -184,6 +196,8 @@ public class ABCalgorithm {
 	    if(jsonResult.split("text\" : \"").length > 1)
 	    {
 	    	String driveDistanceInKm = jsonResult.split("text\" : \"")[1].split("m\"")[0];
+	    	if(driveDistanceInKm.toLowerCase().contains("k"))//If the distance is in km remove the k from the km.
+	    		driveDistanceInKm = driveDistanceInKm.substring(0, driveDistanceInKm.length() - 1);
 	    	return Double.parseDouble(driveDistanceInKm);
 	    }
 		throw new Exception("Client should never except latitude and attitude that are not related to real address!");
