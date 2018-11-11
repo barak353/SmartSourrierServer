@@ -18,15 +18,15 @@ public class ABCalgorithm {
 	//This algorithm is executing per region.
 
 	private int runtime = 3;  /*Algorithm can be run many times in order to see its robustness*/
-	private int maxCycle = 2500; /*The number of cycles for foraging {a stopping criteria}*/
+	private int maxCycle = 10; /*The number of cycles for foraging {a stopping criteria}*/
 	private static final int NUM_OF_DISTRIBUTION_IN_REGION = 10;
-	private static final int NUM_OF_FACTORS = 3;
 	private Distribution[] distributions;
 	private Region region;
 	private ArrayList<Delivery> deliveriesToDistributeInRegion;//This are the deliveries from type 0 in the region.
 	double maxDriveDistanceBetweenPairDeliveriesInRegion = 0.0;
 	double totalNumOfUrgentDeliveriesInDistribution = 0;
 	double numOfDeliveriesToDistributeInRegion = 0.0;
+	double higestPossibleValueForDriveDistance = 0.0;
 	int num = 0;
 	/*Initial food sources are produced for all employed bees: Number of distributions are generated randomly in each region
 	 *(Associating each delivery with a random courier in that region). Time complexity: O(D+C)⋅NumOfdistributions) =* O(D).
@@ -78,6 +78,7 @@ public class ABCalgorithm {
 				Double[] orig = {origDelivery.getLatitude(), origDelivery.getLongitude()};
 				Double[] dest = {destDelivery.getLatitude(), destDelivery.getLongitude()};
 				double driveDistance = getDriveDistance(orig, dest);
+				this.higestPossibleValueForDriveDistance += driveDistance;
 				if(maxDriveDistanceBetweenPairDeliveriesInRegion < driveDistance)
 					maxDriveDistanceBetweenPairDeliveriesInRegion = driveDistance;
 			}
@@ -89,13 +90,15 @@ public class ABCalgorithm {
 	 * */
 	public void SendEmployedBees() throws Exception
 	{
-		int cut = 0;//For debuging
+		int cut = 0;//For debugging
 		for(Distribution distribution : distributions)
 		{
 			System.out.println("--------------------------------Distribution #"+cut+"--------------------------------");
-			Double[] factorsProbabilities = {0.0, 0.0, 0.0};
+			Double[] factorsProbabilities = {0.0, 0.0, 0.0, 0.0};
 			double maximumNumberOfUrgentDeliveriesInADivision = 0;
 			double totalAvgsOfTotalDistancesBetweenDeliveriesInDivisions = 0.0;
+			double maxTotalDistancesBetweenDeliveriesInDivision = 0.0;
+			double minTotalDistancesBetweenDeliveriesInDivision = this.maxDriveDistanceBetweenPairDeliveriesInRegion * this.higestPossibleValueForDriveDistance;
 			for(Division division : distribution.getDivisions())
 			{
 				double numberOfUrgentDeliveriesInDivision = 0;
@@ -119,12 +122,20 @@ public class ABCalgorithm {
 						maximumNumberOfUrgentDeliveriesInADivision = numberOfUrgentDeliveriesInDivision;
 				}
 				double numOfPairsOfDeliveriesInDivision = (division.getDeliveries().size() * (division.getDeliveries().size() - 1) ) / 2;//Hand shake lemma;
+				//loadDistanceFactor
+				if( totalDistancesBetweenDeliveriesInDivision > maxTotalDistancesBetweenDeliveriesInDivision)
+					maxTotalDistancesBetweenDeliveriesInDivision = totalDistancesBetweenDeliveriesInDivision;
+				if( totalDistancesBetweenDeliveriesInDivision < minTotalDistancesBetweenDeliveriesInDivision)
+					minTotalDistancesBetweenDeliveriesInDivision = totalDistancesBetweenDeliveriesInDivision;
 				if(numOfPairsOfDeliveriesInDivision != 0)
-					totalAvgsOfTotalDistancesBetweenDeliveriesInDivisions += (totalDistancesBetweenDeliveriesInDivision / numOfPairsOfDeliveriesInDivision);
-				else
+				{
+					double avgTotalDistancesBetweenDeliveriesInDivision= (totalDistancesBetweenDeliveriesInDivision / numOfPairsOfDeliveriesInDivision);
+					totalAvgsOfTotalDistancesBetweenDeliveriesInDivisions += avgTotalDistancesBetweenDeliveriesInDivision;
+				}else
 					totalAvgsOfTotalDistancesBetweenDeliveriesInDivisions += 0;
 				System.out.println("division-courier-Id: "+ division.getCourier().getId() + " -> totalDistancesBetweenDeliveriesInDivision: " + totalDistancesBetweenDeliveriesInDivision + " , (totalDistancesBetweenDeliveriesInDivision / numOfPairsOfDeliveriesInDivision) = " +(totalDistancesBetweenDeliveriesInDivision / numOfPairsOfDeliveriesInDivision));
 			}
+			System.out.println("minTotalDistancesBetweenDeliveriesInDivision: "+ minTotalDistancesBetweenDeliveriesInDivision +" , maxTotalDistancesBetweenDeliveriesInDivision: " + maxTotalDistancesBetweenDeliveriesInDivision );
 			System.out.println("totalAvgsOfTotalDistancesBetweenDeliveriesInDivisions: " + totalAvgsOfTotalDistancesBetweenDeliveriesInDivisions);
 			//LoadFactor 
 			double maximumNumberOfDeliveriesInDivision = 0.0;
@@ -133,24 +144,27 @@ public class ABCalgorithm {
 			{
 				for(Division division: distribution.getDivisions())
 				{
+					//loadFactor
 					if(division.getDeliveries().size() > maximumNumberOfDeliveriesInDivision)
 						maximumNumberOfDeliveriesInDivision = division.getDeliveries().size();
 					if(division.getDeliveries().size() < minimumNumberOfDeliveriesInDivision)
 						minimumNumberOfDeliveriesInDivision = division.getDeliveries().size();
 				}
 			}
-			double loadFactor = maximumNumberOfDeliveriesInDivision - minimumNumberOfDeliveriesInDivision;
 			double avgOfTotalAvgDistancesInDivisions = (totalAvgsOfTotalDistancesBetweenDeliveriesInDivisions / distribution.getDivisions().length);
-			System.out.println("avgOfTotalAvgDistancesInDivisions: "+avgOfTotalAvgDistancesInDivisions);
-			factorsProbabilities[2] = 1 - ( avgOfTotalAvgDistancesInDivisions / maxDriveDistanceBetweenPairDeliveriesInRegion);//Most important
+			double loadFactor = maximumNumberOfDeliveriesInDivision - minimumNumberOfDeliveriesInDivision;
+			double loadDistanceFactor = maxTotalDistancesBetweenDeliveriesInDivision - minTotalDistancesBetweenDeliveriesInDivision;
+			System.out.println("avgOfTotalAvgDistancesInDivisions: "+avgOfTotalAvgDistancesInDivisions + " , loadDistanceFactor: " + loadDistanceFactor);
+			factorsProbabilities[3] = 1 - ( avgOfTotalAvgDistancesInDivisions / maxDriveDistanceBetweenPairDeliveriesInRegion);//Most important
+			factorsProbabilities[2] = 1 - ( loadDistanceFactor / this.higestPossibleValueForDriveDistance);
 			factorsProbabilities[1] = 1 - ( loadFactor / this.numOfDeliveriesToDistributeInRegion);
 			factorsProbabilities[0] = 1 - ( maximumNumberOfUrgentDeliveriesInADivision / totalNumOfUrgentDeliveriesInDistribution);//Less important
 			System.out.println("factorsProbabilities[2]: "+factorsProbabilities[2] +", maxDriveDistanceBetweenPairDeliveriesInRegion="+maxDriveDistanceBetweenPairDeliveriesInRegion);
 
 			//total fitness
 			Double distributionFitness = 0.0;
-			for(int i = 0; i < 2; i++)
-				distributionFitness += factorsProbabilities[i] * (double) (i + 1);
+			for(int i = 1; i <= 4; i++)
+				distributionFitness += factorsProbabilities[i - 1] * (double) (i);
 			distribution.setFitness(distributionFitness);
 			printLog(distribution, distributionFitness, avgOfTotalAvgDistancesInDivisions);
 			cut++;//fpt debugging
