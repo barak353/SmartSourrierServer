@@ -219,7 +219,7 @@ public class ABCalgorithm {
 	
 	private static Double getDriveDistance(Double[] origin, Double[] destination) throws Exception
 	{
-	    String uri = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial$&origins={latitude-origin},{longitude-origin}&destinations={latitude-destination},{longitude-destination}&key=AIzaSyB1zPXsprtP41UCI9zd30FZkwJf-U1p5Ao";
+	    String uri = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial$&origins={latitude-origin},{longitude-origin}&destinations={latitude-destination},{longitude-destination}&key=My-Key";
 	    uri = uri.replace("{latitude-origin}", origin[0].toString());
 	    uri = uri.replace("{longitude-origin}", origin[1].toString());
 	    uri = uri.replace("{latitude-destination}", destination[0].toString());
