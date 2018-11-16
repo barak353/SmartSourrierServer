@@ -1,3 +1,5 @@
+import java.util.Hashtable;
+
 import ABCalgorithm.ABCalgorithm;
 
 //import com.smartcourier.beans.Customer;
@@ -19,7 +21,12 @@ public class tester {
 ////		customerResponse = customerDao.findCustomerByID(2);
 //		System.out.println(customerResponse.toString());
 //		
-
+		Hashtable<String,Double> test = new Hashtable<String,Double>();
+		test.put("a", 0.0);
+		test.put("b", 1.1);
+		String a = "a";
+		String b = "b";
+		System.out.println(test.get(b));
 	}
 
 }
