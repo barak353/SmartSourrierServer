@@ -21,6 +21,8 @@ import com.smartcourier.dao.DeliveryDao;
 import com.smartcourier.dao.RegionDao;
 
 import ABCalgorithm.ABCalgorithm;
+import ABCalgorithm.Distribution;
+import ABCalgorithm.Division;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -69,7 +71,18 @@ public class RegionController {
 			{
 				ArrayList<Delivery> deliveriesToDistributeInRegion = new ArrayList<Delivery>(deliveryDao.findByRegionAndType(savedRegion,0));
 			     deliveriesToDistributeInRegion.addAll((ArrayList<Delivery>) deliveryDao.findByRegionAndType(savedRegion,1));
-				 beeColony.runABCalgorithm(savedRegion, deliveriesToDistributeInRegion);
+				 Distribution distribution = beeColony.runABCalgorithm(savedRegion, deliveriesToDistributeInRegion);
+				 //Save result from ABCalgorithm to DB.
+				 for(Division division: distribution.getDivisions())
+				 {
+					 Courier courier = division.getCourier();
+					 for(Delivery deliveryToCourier: division.getDeliveries())
+					 {
+						 deliveryToCourier.setCourier(courier);
+						 deliveryDao.delete(deliveryToCourier);
+						 deliveryDao.save(deliveryToCourier);
+					 }
+				 }
 			}
 			return savedRegion;
 		} else{

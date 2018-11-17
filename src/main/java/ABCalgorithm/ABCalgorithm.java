@@ -311,7 +311,7 @@ public class ABCalgorithm {
 		
 	}
 
-	public void runABCalgorithm(Region region, ArrayList<Delivery> deliveriesToDistributeInRegion) throws Exception
+	public Distribution runABCalgorithm(Region region, ArrayList<Delivery> deliveriesToDistributeInRegion) throws Exception
 	{
 		int iter=0;
 		int run=0;
@@ -328,7 +328,7 @@ public class ABCalgorithm {
 		}
 		System.out.println("This is the best distribution: ");
 		calculateFitness(this.bestDistribution,8888888);
-
+		return this.bestDistribution;
 //		getEmployees
 //        System.out.println("beeColony finished!");
 //		Double[] orig = {30.0200, 30.0400};
