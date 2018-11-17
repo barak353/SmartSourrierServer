@@ -4,11 +4,9 @@ import java.util.HashMap;
 
 public class Distribution {
 	Long id;
-	
-	HashMap<String,Double> factors = new HashMap<String,Double>(3);
-	
 	Division[] divisions;
 	Double fitness;
+	Integer trailCounter = 0;//The trail counter of the unmodified distribution indicates how much failed attempts have been made to improve the fitness of the unmodified distribution.
 	
 	public Distribution(int numOfDivisions){
 		this.divisions = new Division[numOfDivisions];
@@ -40,4 +38,13 @@ public class Distribution {
 	public void setFitness(Double fitness) {
 		this.fitness = fitness;
 	}
+
+	public Integer getTrailCounter() {
+		return trailCounter;
+	}
+
+	public void setTrailCounter(Integer trailCounter) {
+		this.trailCounter += trailCounter;
+	}
+	
 }

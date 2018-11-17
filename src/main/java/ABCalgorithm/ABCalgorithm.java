@@ -28,6 +28,8 @@ public class ABCalgorithm {
 	double higestPossibleValueForDriveDistance = 0.0;
 	int num = 0;
 	Distribution bestDistribution;
+	Integer maximumTrail = 5;//The algorithm will discard this distribution that aceeded the maximum trail.
+	private Region region;
 	//#####Testing##########Testing##########Testing##########Testing##########Testing#####
 	static Hashtable<String, Hashtable<String,Double> > distancesTest = new Hashtable<String, Hashtable<String,Double> >();
 	
@@ -92,11 +94,8 @@ public class ABCalgorithm {
 		this.numOfDeliveriesToDistributeInRegion = deliveriesToDistributeInRegion.size(); //This needed for the load factor.
 		//Initialize distributions
 		this.distributions = new Distribution[NUM_OF_DISTRIBUTION_IN_REGION];
-		generateDistancesTest();
-		for(int k = 0; k < NUM_OF_DISTRIBUTION_IN_REGION; k++)
-		{
-			this.distributions[k] = new Distribution(region.getCourier().size());
-		}
+		this.region = region;
+		generateDistancesTest();//For testing.
 		//Count the total number of urgent deliveries.
 		for(int j = 0; j < deliveriesToDistributeInRegion.size() ;j++)
 		{
@@ -105,25 +104,7 @@ public class ABCalgorithm {
 		}
 		//Associating each delivery with a random courier in that region
 		for( int i = 0; i < NUM_OF_DISTRIBUTION_IN_REGION; i++)
-		{
-			//Initialize divisions in the distribution
-			Division[] divisions = new Division[region.getCourier().size()];
-			Iterator<Courier> couriersIterator = region.getCourier().iterator();
-			//Associate each division with a courier.
-			for(int k = 0; k < region.getCourier().size(); k++)
-			{
-				divisions[k] = new Division();
-				divisions[k].setCourier(couriersIterator.next());
-			}
-			//For each distribution randomize deliveries from type 0 or 1 to the divisions.
-			for(int j = 0; j < deliveriesToDistributeInRegion.size() ;j++)
-			{
-				int divisionIndex = (int )(Math.random() * divisions.length); //Randomize number between 1 to number of divisions (couriers) in the region.
-				divisions[divisionIndex].getDeliveries().add(deliveriesToDistributeInRegion.get(j));//set delivery to randomized division.
-			}
-			//Set divisions to distribution.
-			distributions[i].setDivisions(divisions);
-		}
+			createDistribution(i);
 		//Find longest driving distance between pair of deliveries in region.
 		for(int j = 0; j < deliveriesToDistributeInRegion.size() ;j++)
 		{
@@ -140,7 +121,6 @@ public class ABCalgorithm {
 			}
 		}
 	}
-	
 	
 	private void calculateFitness(Distribution distribution,int cut)//cut for debugging
 	{
@@ -277,20 +257,60 @@ public class ABCalgorithm {
 			double origDitness = modifiedDistribution.getFitness();
 			calculateFitness(modifiedDistribution, 99);
 			double newFitness = modifiedDistribution.getFitness();
-			if(newFitness < origDitness)//then return distribution back to original.
+			if(newFitness <= origDitness)//then return distribution back to original.
 			{
+				modifiedDistribution.setTrailCounter(1);//Add one to the distribution trail counter (because improvement didn't succeeded).
 				modifiedDistribution.getDivisions()[division1Index].setDeliveries(saveOrigDeliveriesInDivision1);
 				modifiedDistribution.getDivisions()[division2Index].setDeliveries(saveOrigDeliveriesInDivision2);
-				calculateFitness(modifiedDistribution, 11);
+				calculateFitness(modifiedDistribution, 99);
+			}else//New distribution is batter
+			{
+				//Find best distribution
+				if(this.bestDistribution.getFitness() < modifiedDistribution.getFitness())
+					this.bestDistribution = modifiedDistribution;
 			}
 		}
 	}
 	
 	public void sendScoutBees()
 	{
-		
+		for(int i=0; i < distributions.length; i++ )
+		{
+			if(distributions[i].getTrailCounter() > this.maximumTrail)
+			{
+				createDistribution(i);
+				calculateFitness(distributions[i],000);
+				if( distributions[i].getFitness() > this.bestDistribution.getFitness())
+				{
+					this.bestDistribution = distributions[i];
+				}
+				break; //Because in every iteration we will have just one distribution that exceeded the maximumTrail.
+			}
+		}
 	}
 	
+	private void createDistribution(int i) {
+		this.distributions[i] = new Distribution(region.getCourier().size());
+		//Initialize divisions in the distribution
+		Division[] divisions = new Division[region.getCourier().size()];
+		Iterator<Courier> couriersIterator = region.getCourier().iterator();
+		//Associate each division with a courier.
+		for(int k = 0; k < region.getCourier().size(); k++)
+		{
+			divisions[k] = new Division();
+			divisions[k].setCourier(couriersIterator.next());
+		}
+		//For each distribution randomize deliveries from type 0 or 1 to the divisions.
+		for(int j = 0; j < deliveriesToDistributeInRegion.size() ;j++)
+		{
+			int divisionIndex = (int )(Math.random() * divisions.length); //Randomize number between 1 to number of divisions (couriers) in the region.
+			divisions[divisionIndex].getDeliveries().add(deliveriesToDistributeInRegion.get(j));//set delivery to randomized division.
+		}
+		//Set divisions to distribution.
+		distributions[i].setDivisions(divisions);
+		
+	}
+
 	public void runABCalgorithm(Region region, ArrayList<Delivery> deliveriesToDistributeInRegion) throws Exception
 	{
 		int iter=0;
@@ -303,10 +323,12 @@ public class ABCalgorithm {
 			for (iter=0; iter < maxCycle; iter++)
 			    { 
 				SendOnlookerBees(); 
-				MemorizeBestSource();
 				sendScoutBees();
 				}
 		}
+		System.out.println("This is the best distribution: ");
+		calculateFitness(this.bestDistribution,8888888);
+
 //		getEmployees
 //        System.out.println("beeColony finished!");
 //		Double[] orig = {30.0200, 30.0400};
