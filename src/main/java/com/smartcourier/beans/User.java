@@ -1,29 +1,38 @@
 package com.smartcourier.beans;
 
-import com.smartcourier.beans.Courier;
 import java.io.Serializable;
-import java.lang.String;
-import javax.persistence.*;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * Entity implementation class for Entity: User
  *
  */
 @Entity
-
+@JsonIgnoreProperties("courier")
 public class User implements Serializable {
 
 	@Id
 	@GeneratedValue
 	private Long id;
-	
 	private String username;
 	private String password;
 	private String firstName;
 	private String lastName;
-	
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "courier_id")
+	//@JsonIgnore 
+    //@JsonBackReference
 	private Courier courier;
 	private static final long serialVersionUID = 1L;
 	

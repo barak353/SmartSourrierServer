@@ -37,8 +37,8 @@ public class Courier implements Serializable {
 
 	
 	private String po;
-
 	@OneToOne(mappedBy = "courier", fetch = FetchType.LAZY)
+	//@JsonManagedReference
 	private User user;
 	
     @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="courier")
@@ -61,7 +61,7 @@ public class Courier implements Serializable {
 	private Set<Region> region = new HashSet<>();
     */
 	@ManyToMany(mappedBy = "courier")
-    @JsonIgnore
+   // @JsonIgnore
 	private Set<Region> region = new HashSet<>();
 	
 	// The 'mappedBy = "courier"' attribute specifies that
@@ -90,11 +90,15 @@ public class Courier implements Serializable {
 		this.region = region;
 	}*/
 
-	
-	
+	 
 	public User getUser() {
 		return user;
 	}
+	
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
 
 	public Set<Region> getRegion() {
 		return region;
@@ -104,9 +108,7 @@ public class Courier implements Serializable {
 		this.region = region;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+
 	
 	public Courier() {
 		super();

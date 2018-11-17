@@ -69,12 +69,12 @@ public class AppController {
 	
 	@GetMapping("/user/getAll")
 	public List<User> getAllUsers(){
-		 List<User> useres = appDao.findAll();
+		List<User> useres = appDao.findAll();
 		return useres;
 	}
 	
 	@ApiOperation(value="Create user", response= Iterable.class)
-	@PostMapping("/user/create")
+	@PutMapping("/user/create")
 	public User createUser(@RequestBody User user) {
 		if (user != null){
 			String username = user.getUsername();
