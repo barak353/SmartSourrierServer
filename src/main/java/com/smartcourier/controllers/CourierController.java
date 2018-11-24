@@ -75,6 +75,11 @@ public class CourierController {
 					deliveryDao.save(delivery);
 				}
 			}
+			for(Region region : courier.getRegion())
+			{
+				region.getCourier().remove(courier);
+				regionDao.save(region);
+			}
 			courierDao.delete(courier);
 	        return true;
 		}else
