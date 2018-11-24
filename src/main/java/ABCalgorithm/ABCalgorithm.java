@@ -166,8 +166,8 @@ public class ABCalgorithm {
 		//LoadFactor 
 		double maximumNumberOfDeliveriesInDivision = 0.0;
 		double minimumNumberOfDeliveriesInDivision = this.numOfDeliveriesToDistributeInRegion;
-		if(distribution.getDivisions()[0].getDeliveries().size() > 0)
-		{
+		//if(distribution.getDivisions()[0].getDeliveries().size() > 0)
+		//{
 			for(Division division: distribution.getDivisions())
 			{
 				//loadFactor
@@ -176,8 +176,10 @@ public class ABCalgorithm {
 				if(division.getDeliveries().size() < minimumNumberOfDeliveriesInDivision)
 					minimumNumberOfDeliveriesInDivision = division.getDeliveries().size();
 			}
-		}
+		//}
 		double loadFactor = maximumNumberOfDeliveriesInDivision - minimumNumberOfDeliveriesInDivision;//
+		if(loadFactor < 0)
+			System.out.println("wait");
 		double loadDistanceFactor = maxTotalDistancesBetweenDeliveriesInDivision;
 		double urgentFactor = maximumNumberOfUrgentDeliveriesInADivision; 
 		double drivingDistanceFactor = sumTotalDistancesBetweenDeliveriesInDivision;
@@ -190,6 +192,7 @@ public class ABCalgorithm {
 			factorsProbabilities[1] = 1 - ( loadFactor / this.numOfDeliveriesToDistributeInRegion);
 		if(totalNumOfUrgentDeliveriesInDistribution != 0)
 			factorsProbabilities[0] = 1 - ( urgentFactor / totalNumOfUrgentDeliveriesInDistribution);//Less important
+
 		System.out.println("factorsProbabilities[3]: "+factorsProbabilities[3] + ", maxDriveDistanceBetweenPairDeliveriesInRegion="+maxDriveDistanceBetweenPairDeliveriesInRegion);
 		System.out.println("factorsProbabilities[2]: "+factorsProbabilities[2]);
 		System.out.println("factorsProbabilities[1]: "+factorsProbabilities[1]);
