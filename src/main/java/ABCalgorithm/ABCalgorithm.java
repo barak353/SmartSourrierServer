@@ -182,10 +182,14 @@ public class ABCalgorithm {
 		double urgentFactor = maximumNumberOfUrgentDeliveriesInADivision; 
 		double drivingDistanceFactor = sumTotalDistancesBetweenDeliveriesInDivision;
 		System.out.println("loadFactor: " + loadFactor + ", loadDistanceFactor: " + loadDistanceFactor + ", urgentFactor: " + urgentFactor + ", drivingDistanceFactor: " + drivingDistanceFactor);
-		factorsProbabilities[3] = 1 - ( drivingDistanceFactor / this.higestPossibleValueForDriveDistance);
-		factorsProbabilities[2] = 1 - ( loadDistanceFactor / this.higestPossibleValueForDriveDistance);
-		factorsProbabilities[1] = 1 - ( loadFactor / this.numOfDeliveriesToDistributeInRegion);
-		factorsProbabilities[0] = 1 - ( urgentFactor / totalNumOfUrgentDeliveriesInDistribution);//Less important
+		if(this.higestPossibleValueForDriveDistance != 0)
+			factorsProbabilities[3] = 1 - ( drivingDistanceFactor / this.higestPossibleValueForDriveDistance);
+		if(this.higestPossibleValueForDriveDistance != 0)
+			factorsProbabilities[2] = 1 - ( loadDistanceFactor / this.higestPossibleValueForDriveDistance);
+		if(this.numOfDeliveriesToDistributeInRegion != 0)
+			factorsProbabilities[1] = 1 - ( loadFactor / this.numOfDeliveriesToDistributeInRegion);
+		if(totalNumOfUrgentDeliveriesInDistribution != 0)
+			factorsProbabilities[0] = 1 - ( urgentFactor / totalNumOfUrgentDeliveriesInDistribution);//Less important
 		System.out.println("factorsProbabilities[3]: "+factorsProbabilities[3] + ", maxDriveDistanceBetweenPairDeliveriesInRegion="+maxDriveDistanceBetweenPairDeliveriesInRegion);
 		System.out.println("factorsProbabilities[2]: "+factorsProbabilities[2]);
 		System.out.println("factorsProbabilities[1]: "+factorsProbabilities[1]);
@@ -294,6 +298,8 @@ public class ABCalgorithm {
 		//Initialize divisions in the distribution
 		Division[] divisions = new Division[region.getCourier().size()];
 		Iterator<Courier> couriersIterator = region.getCourier().iterator();
+		@SuppressWarnings("unused")
+		Set<Courier> couriers = region.getCourier();
 		//Associate each division with a courier.
 		for(int k = 0; k < region.getCourier().size(); k++)
 		{

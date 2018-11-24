@@ -41,7 +41,8 @@ public class Region implements Serializable {
 
 
 */
-	@ManyToMany(cascade = { 
+	@ManyToMany(fetch=FetchType.EAGER, 
+			cascade = { 
 		    CascadeType.PERSIST, 
 		    CascadeType.MERGE
 		})

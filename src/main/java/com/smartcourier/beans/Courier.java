@@ -39,10 +39,14 @@ public class Courier implements Serializable {
 	private String po;
 	@OneToOne(mappedBy = "courier", fetch = FetchType.LAZY)
 	//@JsonManagedReference
+    @JsonIgnore
+
 	private User user;
 	
     @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="courier")
     //@JsonManagedReference
+    //@JsonIgnore
+
 	private List<Delivery> delivery;
 	
 	

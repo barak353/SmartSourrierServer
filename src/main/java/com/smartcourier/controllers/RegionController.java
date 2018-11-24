@@ -2,6 +2,8 @@ package com.smartcourier.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,10 +45,10 @@ public class RegionController {
 	@Autowired
 	DeliveryDao deliveryDao;
 	
-	@GetMapping("/getAll")
-	public List<Region> getAllSalary(){
-		List<Region> regions = regionDao.findAll();
-		return regions;
+	@ApiOperation(value="Get region", response= Iterable.class)
+	@GetMapping("/get/{regionId}")
+	public Region getRegionById(@PathVariable(value = "regionId") Long regionId){
+		return regionDao.findOne(regionId);
 	}
 	
 	@ApiOperation(value="Create region", response= Iterable.class)
@@ -67,25 +69,29 @@ public class RegionController {
 			delivery.setRegion(region);
 			delivery.setType(0);//Deliveries that have not yet been assigned to a courier because they have not yet been distributed by the algorithm.
 			deliveryDao.save(delivery);
-			Region savedRegion = regionDao.findOne(regionId);
-			if( ( savedRegion.getDelivery().size()  > savedRegion.getThreshold() ) && ( savedRegion.getCourier().size() > 0 )) //If the number of deliveries in this region is higher then the region threshold, then run the distribution algorithm.
+			//Region savedRegion = regionDao.findOne(regionId);
+			if( ( region.getDelivery().size()  > region.getThreshold() ) && ( region.getCourier().size() > 0 )) //If the number of deliveries in this region is higher then the region threshold, then run the distribution algorithm.
 			{
-				ArrayList<Delivery> deliveriesToDistributeInRegion = new ArrayList<Delivery>(deliveryDao.findByRegionAndType(savedRegion,0));
-			     deliveriesToDistributeInRegion.addAll((ArrayList<Delivery>) deliveryDao.findByRegionAndType(savedRegion,1));
-				 Distribution distribution = beeColony.runABCalgorithm(savedRegion, deliveriesToDistributeInRegion);
+				 Set<Courier> forTesting = region.getCourier();
+				 ArrayList<Delivery> deliveriesToDistributeInRegion = new ArrayList<Delivery>(deliveryDao.findByRegionAndType(region,0));
+				 ArrayList<Delivery> deliveriesFromType1 = (ArrayList<Delivery>) deliveryDao.findByRegionAndType(region,1);
+			     deliveriesToDistributeInRegion.addAll(deliveriesFromType1);
+				 Distribution distribution = beeColony.runABCalgorithm(region, deliveriesToDistributeInRegion);
 				 //Save result from ABCalgorithm to DB.
 				 for(Division division: distribution.getDivisions())
 				 {
 					 Courier courier = division.getCourier();
 					 for(Delivery deliveryToCourier: division.getDeliveries())
 					 {
-						 deliveryToCourier.setCourier(courier);
+						 //Deliveries that have been assigned to a courier by the algorithm, but the courier didn't approved that he is willing to deliver them.
+						 deliveryToCourier.setType(1);
 						 deliveryDao.delete(deliveryToCourier);
+						 deliveryToCourier.setCourier(courier);
 						 deliveryDao.save(deliveryToCourier);
 					 }
 				 }
 			}
-			return savedRegion;
+			return region;
 		} else{
 			return null;
 		}
@@ -124,7 +130,7 @@ public class RegionController {
 	
 	@ApiOperation(value="Delete delivery", response= Iterable.class)
 	@DeleteMapping("/delete/{regionId}/{deliveryId}")
-	public Boolean deleteDeliveryFromRegion(@PathVariable(value = "regionId") Long regionId, @PathVariable(value = "deliveryId") Long deliveryId) {
+	public Boolean deleteDeliveryInRegion(@PathVariable(value = "regionId") Long regionId, @PathVariable(value = "deliveryId") Long deliveryId) {
 		//Region will be deleted only if it have 0 deliveries.
 		Region currentRegion = regionDao.findOne(regionId);
 		if(currentRegion != null)
@@ -136,8 +142,8 @@ public class RegionController {
 					Delivery delivery = currentRegion.getDelivery().get(i);
 					if((long)delivery.getId() == (long)deliveryId)
 					{
-						currentRegion.getDelivery().remove(i);
-						regionDao.save(currentRegion);
+						//currentRegion.getDelivery().remove(i);
+						//regionDao.save(currentRegion);
 						deliveryDao.delete(delivery);
 						return true;
 					}
