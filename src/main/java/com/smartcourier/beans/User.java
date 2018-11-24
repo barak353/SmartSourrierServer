@@ -29,11 +29,6 @@ public class User implements Serializable {
 	private String firstName;
 	private String lastName;
 
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "courier_id")
-	//@JsonIgnore 
-    //@JsonBackReference
-	private Courier courier;
 	private static final long serialVersionUID = 1L;
 	
 	public User() {
@@ -78,12 +73,5 @@ public class User implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}   
-	public Courier getCourier() {
-		return this.courier;
-	}
-
-	public void setCourier(Courier courier) {
-		this.courier = courier;
-	}
-   
+ 
 }

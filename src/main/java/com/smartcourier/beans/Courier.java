@@ -37,11 +37,11 @@ public class Courier implements Serializable {
 
 	
 	private String po;
-	@OneToOne(mappedBy = "courier", fetch = FetchType.LAZY)
+	//@OneToOne(mappedBy = "courier", fetch = FetchType.LAZY)
 	//@JsonManagedReference
-    @JsonIgnore
+    //@JsonIgnore
 
-	private User user;
+	//private User user;
 	
     @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="courier")
     //@JsonManagedReference
@@ -64,7 +64,7 @@ public class Courier implements Serializable {
 	@ManyToMany(mappedBy = "courier")
 	private Set<Region> region = new HashSet<>();
     */
-	@ManyToMany(fetch=FetchType.LAZY, 	mappedBy = "courier")
+	@ManyToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL,	mappedBy = "courier")
     @JsonIgnore
 	private Set<Region> region = new HashSet<>();
 	
@@ -95,13 +95,13 @@ public class Courier implements Serializable {
 	}*/
 
 	 
-	public User getUser() {
+	/*public User getUser() {
 		return user;
 	}
 	
 	public void setUser(User user) {
 		this.user = user;
-	}
+	}*/
 	
 
 	public Set<Region> getRegion() {

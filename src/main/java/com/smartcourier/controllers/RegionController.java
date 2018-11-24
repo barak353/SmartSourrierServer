@@ -99,13 +99,16 @@ public class RegionController {
 	
 	@ApiOperation(value="Update region", response= Iterable.class)//Please use this to create new delivery (because every delivery have a region).
 	@PutMapping("/update/{regionId}/{courierId}")
-	public Region assignCourierToRegion(@PathVariable(value = "regionId") Long regionId, @PathVariable(value = "courierId") Long couriderId) {
+	public Courier assignCourierToRegion(@PathVariable(value = "regionId") Long regionId, @PathVariable(value = "courierId") Long couriderId) {
 		Region region = regionDao.findOne(regionId);
 		Courier courier = courierDao.findOne(couriderId);
 		if(region != null && courier != null){
-			region.getCourier().add(courier);
+			courier.getRegion().add(region);
+			courierDao.save(courier);
+			return courier;
+			/*region.getCourier().add(courier);
 			regionDao.save(region);
-			return region;
+			return region;*/
 		} else{
 			return null;
 		}

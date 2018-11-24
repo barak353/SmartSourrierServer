@@ -1,5 +1,6 @@
 package com.smartcourier.controllers;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -15,9 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.smartcourier.beans.Courier;
 import com.smartcourier.beans.Delivery;
+import com.smartcourier.beans.Region;
 import com.smartcourier.beans.User;
 import com.smartcourier.dao.CourierDao;
 import com.smartcourier.dao.DeliveryDao;
+import com.smartcourier.dao.RegionDao;
+
+import ABCalgorithm.Division;
+
 import com.smartcourier.dao.AppDao;
 
 import io.swagger.annotations.Api;
@@ -37,6 +43,9 @@ public class CourierController {
 	CourierDao courierDao;
 
 	@Autowired
+	RegionDao regionDao;
+	
+	@Autowired
 	DeliveryDao deliveryDao;
 	
 	@ApiOperation(value="Get courier", response= Iterable.class)
@@ -53,16 +62,23 @@ public class CourierController {
 	@ApiOperation(value="Delete courier", response= Iterable.class)
 	@DeleteMapping("/delete/{courierId}")
 	public Boolean deleteCourier(@PathVariable(value = "courierId") Long courierId) {
-		List<User> users = appDao.findAll();
-		for(User user : users){
-            if (user.getCourier() != null) {
-                if(user.getCourier().getId().equals(courierId)){
-                    appDao.delete(user);
-                    return true;
-                }
+		Courier courier = courierDao.findOne(courierId);
+		if(courier != null)
+		{
+			for(Delivery delivery: courier.getDelivery())
+			{
+				//unassigned delivery from this courier.
+				if(delivery.getCourier().getId() == courierId)
+				{
+					delivery.setCourier(null);
+					delivery.setType(0);//This delivery has not been assigned to any courier.
+					deliveryDao.save(delivery);
+				}
 			}
-		}
-		return false;
+			courierDao.delete(courier);
+	        return true;
+		}else
+			return false;
 	}
 	
 	@ApiOperation(value="Update delivery", response= Iterable.class)

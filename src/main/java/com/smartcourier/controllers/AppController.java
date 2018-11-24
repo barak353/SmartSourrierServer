@@ -54,7 +54,7 @@ public class AppController {
 		}
 		
 		if(success == false){
-			loginOut.setErrorMessage("Username or password is incorrect");
+			loginOut.setErrorMessage("סיסמא או שם משתמש לא נכונים");
 		}
 		
 		return loginOut;
@@ -73,7 +73,8 @@ public class AppController {
 		return useres;
 	}
 	
-	@ApiOperation(value="Create user", response= Iterable.class)
+
+	@ApiOperation(value="Create user", response= Iterable.class)//This is for sinning up a secretary user (full privilege).
 	@PutMapping("/user/create")
 	public User createUser(@RequestBody User user) {
 		if (user != null){

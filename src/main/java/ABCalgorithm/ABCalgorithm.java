@@ -301,8 +301,6 @@ public class ABCalgorithm {
 		//Initialize divisions in the distribution
 		Division[] divisions = new Division[region.getCourier().size()];
 		Iterator<Courier> couriersIterator = region.getCourier().iterator();
-		@SuppressWarnings("unused")
-		Set<Courier> couriers = region.getCourier();
 		//Associate each division with a courier.
 		for(int k = 0; k < region.getCourier().size(); k++)
 		{
