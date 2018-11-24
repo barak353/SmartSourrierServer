@@ -45,7 +45,8 @@ public class RegionController {
 	
 	@GetMapping("/getAll")
 	public List<Region> getAllSalary(){
-		return regionDao.findAll();
+		List<Region> regions = regionDao.findAll();
+		return regions;
 	}
 	
 	@ApiOperation(value="Create region", response= Iterable.class)
@@ -123,7 +124,7 @@ public class RegionController {
 	
 	@ApiOperation(value="Delete delivery", response= Iterable.class)
 	@DeleteMapping("/delete/{regionId}/{deliveryId}")
-	public Boolean deleteRegion(@PathVariable(value = "regionId") Long regionId, @PathVariable(value = "deliveryId") Long deliveryId) {
+	public Boolean deleteDeliveryFromRegion(@PathVariable(value = "regionId") Long regionId, @PathVariable(value = "deliveryId") Long deliveryId) {
 		//Region will be deleted only if it have 0 deliveries.
 		Region currentRegion = regionDao.findOne(regionId);
 		if(currentRegion != null)

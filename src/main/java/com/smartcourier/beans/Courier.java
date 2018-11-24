@@ -60,8 +60,8 @@ public class Courier implements Serializable {
 	@ManyToMany(mappedBy = "courier")
 	private Set<Region> region = new HashSet<>();
     */
-	@ManyToMany(mappedBy = "courier")
-   // @JsonIgnore
+	@ManyToMany(fetch=FetchType.LAZY, 	mappedBy = "courier")
+    @JsonIgnore
 	private Set<Region> region = new HashSet<>();
 	
 	// The 'mappedBy = "courier"' attribute specifies that
