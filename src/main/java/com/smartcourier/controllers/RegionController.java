@@ -152,4 +152,16 @@ public class RegionController {
 		}
 		return false;
 	}
+	
+	@ApiOperation(value="Get region", response= Iterable.class)
+	@GetMapping("getAll/{courierId}")
+	public List<Region> getCourierRegions(@PathVariable(value = "courierId") Long courierId) {
+		List<Region> regions = regionDao.findByCourier(courierDao.findOne(courierId));
+		for(Region region: regions)
+		{
+			region.setCourier(null);
+			region.setDelivery(null);
+		}
+		return regions;
+	}
 }
