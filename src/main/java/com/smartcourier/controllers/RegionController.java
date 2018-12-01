@@ -153,8 +153,8 @@ public class RegionController {
 		return false;
 	}
 	
-	@ApiOperation(value="Get region", response= Iterable.class)
-	@GetMapping("getAll/{courierId}")
+	@ApiOperation(value="Get courier's regions", response= Iterable.class)
+	@GetMapping("getRegions/{courierId}")
 	public List<Region> getCourierRegions(@PathVariable(value = "courierId") Long courierId) {
 		List<Region> regions = regionDao.findByCourier(courierDao.findOne(courierId));
 		for(Region region: regions)
@@ -163,5 +163,17 @@ public class RegionController {
 			region.setDelivery(null);
 		}
 		return regions;
+	}
+	
+	@ApiOperation(value="Get courier's deliveries", response= Iterable.class)
+	@GetMapping("getDeliveries/{regionId}/{courierId}")
+	public List<Delivery> getCourierDeliveries(@PathVariable(value = "courierId") Long courierId, @PathVariable(value = "regionId") Long regionId) {
+		List<Delivery> deliveries = deliveryDao.findByCourierAndRegion(courierDao.findOne(courierId) , regionDao.findOne(regionId));
+		/*for(Delivery delivery: deliveries)
+		{
+			delivery.setCourier(null);
+			delivery.setRegion(null);
+		}*/
+		return deliveries;
 	}
 }

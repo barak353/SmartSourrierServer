@@ -33,7 +33,7 @@ public class Courier implements Serializable {
 	private Long id;
 	private String email;
 	private String phone;
-	private String preferredArea;
+	//private String preferredArea;
 
 	
 	private String po;
@@ -140,12 +140,12 @@ public class Courier implements Serializable {
 		this.phone = phone;
 	}   
 	
-	public String getPreferredArea() {
+	/*public String getPreferredArea() {
 	    return preferredArea;
 	}
 	public void setPreferredArea(String preferredArea) {
 	    this.preferredArea = preferredArea;
-	}
+	}*/
 	
 	public String getPo() {
 		return this.po;

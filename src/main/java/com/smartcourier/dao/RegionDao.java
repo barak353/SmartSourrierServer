@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.smartcourier.beans.Courier;
-import com.smartcourier.beans.Delivery;
 import com.smartcourier.beans.Region;
 
 @Repository
