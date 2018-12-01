@@ -137,4 +137,11 @@ public class CourierController {
 			return null;
 		}
 	}
+	
+	@ApiOperation(value="GetAll courier deliveries", response= Iterable.class)
+	@GetMapping("/getDeliveries/{courierId}")
+	public List<Delivery> getCourier(@PathVariable(value = "courierId") Long courierId) {
+		Courier currentCourier = courierDao.findOne(courierId);
+		return currentCourier.getDelivery();
+	}
 }
