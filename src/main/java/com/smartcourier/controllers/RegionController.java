@@ -45,6 +45,16 @@ public class RegionController {
 	@Autowired
 	DeliveryDao deliveryDao;
 	
+	@GetMapping("/getAll")
+	public List<Region> getAllRegion(){
+		List<Region> regions = regionDao.findAll();
+		for(Region region: regions){
+			region.setCourier(null);
+			region.setDelivery(null);
+		}
+		return regions;
+	}
+	
 	@ApiOperation(value="Get region", response= Iterable.class)
 	@GetMapping("/get/{regionId}")
 	public Region getRegionById(@PathVariable(value = "regionId") Long regionId){

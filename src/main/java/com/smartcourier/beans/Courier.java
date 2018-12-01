@@ -32,6 +32,7 @@ public class Courier implements Serializable {
 	@GeneratedValue
 	private Long id;
 	private String email;
+	private String password;
 	private String phone;
 	//private String preferredArea;
 
@@ -140,12 +141,6 @@ public class Courier implements Serializable {
 		this.phone = phone;
 	}   
 	
-	/*public String getPreferredArea() {
-	    return preferredArea;
-	}
-	public void setPreferredArea(String preferredArea) {
-	    this.preferredArea = preferredArea;
-	}*/
 	
 	public String getPo() {
 		return this.po;
@@ -163,13 +158,12 @@ public class Courier implements Serializable {
 		this.delivery = delivery;
 	}   
 	
-	
-	
-	/*public List<Salary> getSalary() {
-		return salary;
+	public String getPassword() {
+		return this.password;
 	}
-	
-	public void setSalary(List<Salary> salary) {
-		this.salary = salary;
-	}*/
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 }
