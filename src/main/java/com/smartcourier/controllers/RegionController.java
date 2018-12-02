@@ -48,10 +48,8 @@ public class RegionController {
 	@GetMapping("/getAll")
 	public List<Region> getAllRegion(){
 		List<Region> regions = regionDao.findAll();
-		for(Region region: regions){
-			region.setCourier(null);
-			region.setDelivery(null);
-		}
+		for(Region region: regions)
+			region.setCourier(null);//Not important for us.
 		return regions;
 	}
 	
