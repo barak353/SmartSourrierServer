@@ -48,8 +48,8 @@ public class RegionController {
 	@GetMapping("/getAll")
 	public List<Region> getAllRegion(){
 		List<Region> regions = regionDao.findAll();
-		for(Region region: regions)
-			region.setCourier(null);//Not important for us.
+		//for(Region region: regions)
+			//region.setCourier(null);//Not important for us.
 		return regions;
 	}
 	
@@ -105,8 +105,8 @@ public class RegionController {
 		}
 	}
 	
-	@ApiOperation(value="Update region", response= Iterable.class)//Please use this to create new delivery (because every delivery have a region).
-	@PutMapping("/update/{regionId}/{courierId}")
+	@ApiOperation(value="Get region", response= Iterable.class)//Please use this to create new delivery (because every delivery have a region).
+	@GetMapping("/update/{regionId}/{courierId}")
 	public Region assignCourierToRegion(@PathVariable(value = "regionId") Long regionId, @PathVariable(value = "courierId") Long couriderId) {
 		Region region = regionDao.findOne(regionId);
 		Courier courier = courierDao.findOne(couriderId);
