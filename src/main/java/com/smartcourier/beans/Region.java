@@ -56,7 +56,7 @@ public class Region implements Serializable {
 	// the 'private Region region;' field in delivery owns the
 	// relationship (i.e. contains the foreign key for the query to
 	// find all deliveries for a region.
-    @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy="region")
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="region")
     //@JsonManagedReference
 	private List<Delivery> delivery;
 	

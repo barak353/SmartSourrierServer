@@ -56,7 +56,8 @@ public class RegionController {
 	@ApiOperation(value="Get region", response= Iterable.class)
 	@GetMapping("/get/{regionId}")
 	public Region getRegionById(@PathVariable(value = "regionId") Long regionId){
-		return regionDao.findOne(regionId);
+		Region region = regionDao.findOne(regionId);
+		return region;
 	}
 	
 	@ApiOperation(value="Create region", response= Iterable.class)
