@@ -106,8 +106,8 @@ public class RegionController {
 		}
 	}
 	
-	@ApiOperation(value="Get region", response= Iterable.class)//Please use this to create new delivery (because every delivery have a region).
-	@GetMapping("/update/{regionId}/{courierId}")
+	@ApiOperation(value="Get region", response= Iterable.class)
+	@GetMapping("/assign/{regionId}/{courierId}")
 	public Region assignCourierToRegion(@PathVariable(value = "regionId") Long regionId, @PathVariable(value = "courierId") Long couriderId) {
 		Region region = regionDao.findOne(regionId);
 		Courier courier = courierDao.findOne(couriderId);
@@ -118,6 +118,16 @@ public class RegionController {
 		} else{
 			return null;
 		}
+	}
+	
+	@ApiOperation(value="Get region", response= Iterable.class)
+	@GetMapping("/unassign/{regionId}/{courierId}")
+	public boolean unassignCourierToRegion(@PathVariable(value = "regionId") Long regionId, @PathVariable(value = "courierId") Long courierId) {
+		Region region = regionDao.findOne(regionId);
+		Courier courier = courierDao.findOne(courierId);
+		region.getCourier().remove(courier);
+		regionDao.save(region);
+        return true;
 	}
 	
 	@ApiOperation(value="Delete region", response= Iterable.class)
