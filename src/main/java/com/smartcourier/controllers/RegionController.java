@@ -142,24 +142,16 @@ public class RegionController {
 	public Boolean deleteDeliveryInRegion(@PathVariable(value = "regionId") Long regionId, @PathVariable(value = "deliveryId") Long deliveryId) {
 		//Region will be deleted only if it have 0 deliveries.
 		Region currentRegion = regionDao.findOne(regionId);
+		boolean isSucceeded = true;
 		if(currentRegion != null)
 		{
-			if(currentRegion.getDelivery().size() > 0)
-			{
-				for(int i = 0; i < currentRegion.getDelivery().size(); i++)
-				{
-					Delivery delivery = currentRegion.getDelivery().get(i);
-					if((long)delivery.getId() == (long)deliveryId)
-					{
-						//currentRegion.getDelivery().remove(i);
-						//regionDao.save(currentRegion);
-						deliveryDao.delete(delivery);
-						return true;
-					}
-				}
-			}
+			Delivery deliveryToRemove = deliveryDao.findOne(deliveryId);
+			deliveryToRemove.setCourier(null);
+			deliveryToRemove.setRegion(null);
+			deliveryDao.save(deliveryToRemove);//Unassigned delivery from courier and region.
+			deliveryDao.delete(deliveryToRemove);//Delete delivery from DB.
 		}
-		return false;
+		return isSucceeded;
 	}
 	
 	@ApiOperation(value="Get courier's regions", response= Iterable.class)
