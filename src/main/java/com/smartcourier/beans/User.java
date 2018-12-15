@@ -26,8 +26,7 @@ public class User implements Serializable {
 	private Long id;
 	private String username;
 	private String password;
-	private String firstName;
-	private String lastName;
+	private String token;//Needs to check this before approving any request.
 
 	private static final long serialVersionUID = 1L;
 	
@@ -35,22 +34,7 @@ public class User implements Serializable {
 		super();
 	} 
 	
-	public String getFirstName() {
-		return firstName;
-	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-	
 	public Long getId() {
 		return this.id;
 	}
@@ -73,5 +57,11 @@ public class User implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}   
- 
+	public String getToken() {
+		return this.token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}   
 }
