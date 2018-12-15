@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.smartcourier.beans.Courier;
 import com.smartcourier.beans.User;
 import com.smartcourier.dao.AppDao;
+import com.smartcourier.dao.CourierDao;
 import com.smartcourier.model.LoginIn;
 import com.smartcourier.model.LoginOut;
 
@@ -33,6 +35,9 @@ public class AppController {
 	@Autowired
 	AppDao appDao;
 
+	@Autowired
+	CourierDao courierDao;
+	
 	@ApiOperation(value="login", response= Iterable.class)
 	@PutMapping("/authenticate")
 	public LoginOut login(@RequestBody LoginIn loginIn) {
@@ -45,6 +50,7 @@ public class AppController {
 				loginOut.setId(user.getId());
 				loginOut.setUsername(username);
 				loginOut.setToken(UUID.randomUUID().toString());
+				//Here we should insert the UUID to HashMap, and every time the user send a request he should send the request with providing his token and we should validate that the token is exist in the HashMap before we let him do anything.
 				return loginOut;
 			} else{
 				success = false;
@@ -55,6 +61,35 @@ public class AppController {
 		
 		if(success == false){
 			loginOut.setErrorMessage("סיסמא או שם משתמש לא נכונים");
+		}
+		
+		return loginOut;
+	}
+	
+	@ApiOperation(value="loginCourier", response= Iterable.class)
+	@PutMapping("/courier/authenticate")
+	public LoginOut loginByCourier(@RequestBody LoginIn loginIn) {
+		String email = loginIn.getUsername().toLowerCase();
+		Boolean success = true;
+		LoginOut loginOut = new LoginOut();
+		//User user = appDao.findByUsername(username);
+		Courier courier = courierDao.findByEmail(email);
+		if(courier != null) {
+			if(courier.getPassword().equals(loginIn.getPassword())) {
+				loginOut.setId(courier.getId());
+				loginOut.setUsername(email);
+				loginOut.setToken(UUID.randomUUID().toString());
+				//Here we should insert the UUID to HashMap, and every time the user send a request he should send the request with providing his token and we should validate that the token is exist in the HashMap before we let him do anything.
+				return loginOut;
+			} else{
+				success = false;
+			}
+		} else{
+			success = false;
+		}
+		
+		if(success == false){
+			loginOut.setErrorMessage("סיסמא או אימייל לא נכונים");
 		}
 		
 		return loginOut;

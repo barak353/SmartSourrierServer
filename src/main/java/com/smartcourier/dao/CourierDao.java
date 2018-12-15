@@ -7,5 +7,7 @@ import com.smartcourier.beans.Courier;
 
 @Repository
 public interface CourierDao extends JpaRepository<Courier, Long>{
+
+	Courier findByEmail(String email);
 	
 }

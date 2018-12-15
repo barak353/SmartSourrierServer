@@ -121,7 +121,10 @@ public class CourierController {
 	
 	@ApiOperation(value="Create courier", response= Iterable.class)
 	@PutMapping("/create")
-	public Courier createDelivery(@RequestBody Courier courier) {
+	public Courier createCourier(@RequestBody Courier courier) {
+		Courier courierFind = courierDao.findByEmail(courier.getEmail());
+		if( courierFind != null)
+			return null;
 		courierDao.save(courier);
 		return courier;
 	}

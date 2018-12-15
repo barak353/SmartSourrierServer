@@ -34,10 +34,8 @@ public class Courier implements Serializable {
 	private String email;
 	private String password;
 	private String phone;
-	//private String preferredArea;
-
-	
-	private String po;
+	private String firstName;
+	private String lastName;
 	//@OneToOne(mappedBy = "courier", fetch = FetchType.LAZY)
 	//@JsonManagedReference
     //@JsonIgnore
@@ -142,14 +140,22 @@ public class Courier implements Serializable {
 	}   
 	
 	
-	public String getPo() {
-		return this.po;
+	public String getFirstName() {
+		return this.firstName;
 	}
 
-	public void setPo(String po) {
-		this.po = po;
+	public void setfFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
+	public String getLastName() {
+		return this.lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	
 	public List<Delivery> getDelivery() {
 		return delivery;
 	}
