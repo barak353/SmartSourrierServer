@@ -188,15 +188,11 @@ public class RegionController {
 		return deliveries;
 	}
 	
-	@ApiOperation(value="Get courier's deliveries with type", response= Iterable.class)
-	@GetMapping("getDeliveries/{regionId}/{courierId}/{type}")
-	public List<Delivery> getCourierDeliveries(@PathVariable(value = "courierId") Long courierId, @PathVariable(value = "regionId") Long regionId, @PathVariable(value = "type") Integer type) {
-		List<Delivery> deliveries = deliveryDao.findByCourierAndRegionAndType(courierDao.findOne(courierId) , regionDao.findOne(regionId), type);
-		/*for(Delivery delivery: deliveries)
-		{
-			delivery.setCourier(null);
-			delivery.setRegion(null);
-		}*/
+	@ApiOperation(value="Get courier's deliveries with type 1 or 2", response= Iterable.class)
+	@GetMapping("getDeliveries/{regionId}/{courierId}/toDeliver")
+	public List<Delivery> getCourierDeliveriesToDeliver(@PathVariable(value = "courierId") Long courierId, @PathVariable(value = "regionId") Long regionId) {
+		List<Delivery> deliveries = deliveryDao.findByCourierAndRegionAndType(courierDao.findOne(courierId) , regionDao.findOne(regionId), 1);
+		deliveries.addAll(deliveryDao.findByCourierAndRegionAndType(courierDao.findOne(courierId) , regionDao.findOne(regionId), 2));
 		return deliveries;
 	}
 }
