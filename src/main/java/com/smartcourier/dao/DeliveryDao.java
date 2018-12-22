@@ -13,4 +13,6 @@ import com.smartcourier.beans.Region;
 public interface DeliveryDao extends JpaRepository<Delivery, Long>{
 	public List<Delivery> findByRegionAndType(Region region, Integer type);
 	public List<Delivery> findByCourierAndRegion(Courier courier , Region region);
+	public List<Delivery> findByCourierAndRegionAndType(Courier courier , Region region, Integer type);
+
 }
