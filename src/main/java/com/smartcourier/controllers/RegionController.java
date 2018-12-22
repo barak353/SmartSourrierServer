@@ -193,6 +193,11 @@ public class RegionController {
 	public List<Delivery> getCourierDeliveriesToDeliver(@PathVariable(value = "courierId") Long courierId, @PathVariable(value = "regionId") Long regionId) {
 		List<Delivery> deliveries = deliveryDao.findByCourierAndRegionAndType(courierDao.findOne(courierId) , regionDao.findOne(regionId), 1);
 		deliveries.addAll(deliveryDao.findByCourierAndRegionAndType(courierDao.findOne(courierId) , regionDao.findOne(regionId), 2));
+		//Change delivery to type 2 since the user request to distribute them.
+		for(Delivery delivery: deliveries){
+			delivery.setType(2);//Couriers approve the assigning of the delivery to him.
+			deliveryDao.save(delivery);
+		}
 		return deliveries;
 	}
 }
