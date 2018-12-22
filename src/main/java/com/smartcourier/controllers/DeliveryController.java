@@ -1,6 +1,11 @@
 package com.smartcourier.controllers;
 
 import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,8 +113,24 @@ public class DeliveryController {
 	public Delivery updateDelivery(@PathVariable(value = "deliveryId") Long deliveryId, @RequestBody Delivery delivery) {
 		Delivery currentDelivery = deliveryDao.findOne(deliveryId);
 		if(currentDelivery != null){
-			deliveryDao.delete(currentDelivery);
-			return deliveryDao.save(delivery);
+			currentDelivery.setType(delivery.getType());
+			currentDelivery.setName((delivery.getName());
+			currentDelivery.setLatitude((delivery.getLatitude());
+			currentDelivery.setLongitude((delivery.getLongitude());
+			currentDelivery.setIsUrgent((delivery.getIsUrgent());
+			return deliveryDao.save(currentDelivery);
+		} else{
+			return null;//Courier is not exist.
+		}
+	}
+	
+	@ApiOperation(value="Update delivery", response= Iterable.class)
+	@GetMapping("/updateType/{deliveryId}/{type}")
+	public Delivery updateDelivery(@PathVariable(value = "deliveryId") Long deliveryId, @PathVariable(value = "type") Integer type) {
+		Delivery currentDelivery = deliveryDao.findOne(deliveryId);
+		if(currentDelivery != null){
+			currentDelivery.setType(type);
+			return deliveryDao.save(currentDelivery);
 		} else{
 			return null;//Courier is not exist.
 		}
