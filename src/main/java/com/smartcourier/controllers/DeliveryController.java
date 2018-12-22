@@ -108,7 +108,7 @@ public class DeliveryController {
 		}
 	}*/
 	
-	@ApiOperation(value="Update delivery's type02", response= Iterable.class)
+	@ApiOperation(value="Update delivery", response= Iterable.class)
 	@PutMapping("/update/{deliveryId}")
 	public Delivery updateDelivery(@PathVariable(value = "deliveryId") Long deliveryId, @RequestBody Delivery delivery) {
 		Delivery currentDelivery = deliveryDao.findOne(deliveryId);
@@ -124,7 +124,7 @@ public class DeliveryController {
 		}
 	}
 	
-	@ApiOperation(value="Update delivery", response= Iterable.class)
+	@ApiOperation(value="Update delivery's type", response= Iterable.class)
 	@GetMapping("/updateType/{deliveryId}/{type}")
 	public Delivery updateDelivery(@PathVariable(value = "deliveryId") Long deliveryId, @PathVariable(value = "type") Integer type) {
 		Delivery currentDelivery = deliveryDao.findOne(deliveryId);
