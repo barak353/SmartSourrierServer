@@ -145,6 +145,8 @@ public class CourierController {
 	@GetMapping("/getDeliveries/{courierId}")
 	public List<Delivery> getCourier(@PathVariable(value = "courierId") Long courierId) {
 		Courier currentCourier = courierDao.findOne(courierId);
-		return currentCourier.getDelivery();
+		if(currentCourier != null)
+			return currentCourier.getDelivery();
+		else return null;
 	}
 }
