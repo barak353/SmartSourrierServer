@@ -161,4 +161,14 @@ public class CourierController {
 			return deliveriesType1;
 		else return null;
 	}
+	
+	@ApiOperation(value="GetAll courier deliveries", response= Iterable.class)
+	@GetMapping("/getDeliveries/{courierId}/delivered")
+	public List<Delivery> getCourierDeliveredDeliveries(@PathVariable(value = "courierId") Long courierId) {
+		Courier courier = courierDao.findOne(courierId);
+		List<Delivery> deliveriesType1 = deliveryDao.findByCourierAndType(courier, 3);//Deliveries assigned to couriers for delivering.
+		if(deliveriesType1 != null)
+			return deliveriesType1;
+		else return null;
+	}
 }
