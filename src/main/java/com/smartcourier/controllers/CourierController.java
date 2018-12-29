@@ -143,10 +143,22 @@ public class CourierController {
 	
 	@ApiOperation(value="GetAll courier deliveries", response= Iterable.class)
 	@GetMapping("/getDeliveries/{courierId}")
-	public List<Delivery> getCourier(@PathVariable(value = "courierId") Long courierId) {
+	public List<Delivery> getCourierDeliveries(@PathVariable(value = "courierId") Long courierId) {
 		Courier currentCourier = courierDao.findOne(courierId);
 		if(currentCourier != null)
 			return currentCourier.getDelivery();
+		else return null;
+	}
+	
+	
+	@ApiOperation(value="GetAll courier deliveries", response= Iterable.class)
+	@GetMapping("/getDeliveries/{courierId}/toDeliver")
+	public List<Delivery> getCourierDeliveriesToDeliver(@PathVariable(value = "courierId") Long courierId) {
+		Courier courier = courierDao.findOne(courierId);
+		List<Delivery> deliveriesType1 = deliveryDao.findByCourierAndType(courier, 1);//Deliveries assigned to couriers for delivering.
+		deliveriesType1.addAll(deliveryDao.findByCourierAndType(courier, 2));//Deliveries assigned to couriers for delivering.
+		if(deliveriesType1 != null)
+			return deliveriesType1;
 		else return null;
 	}
 }
