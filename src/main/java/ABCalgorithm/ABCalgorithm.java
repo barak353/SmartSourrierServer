@@ -180,7 +180,7 @@ public class ABCalgorithm {
 		double loadFactor = maximumNumberOfDeliveriesInDivision - minimumNumberOfDeliveriesInDivision;//
 		if(loadFactor < 0)
 			System.out.println("wait");
-		double loadDistanceFactor = maxTotalDistancesBetweenDeliveriesInDivision;
+		double loadDistanceFactor = maxTotalDistancesBetweenDeliveriesInDivision - minTotalDistancesBetweenDeliveriesInDivision;
 		double urgentFactor = maximumNumberOfUrgentDeliveriesInADivision; 
 		double drivingDistanceFactor = sumTotalDistancesBetweenDeliveriesInDivision;
 		System.out.println("loadFactor: " + loadFactor + ", loadDistanceFactor: " + loadDistanceFactor + ", urgentFactor: " + urgentFactor + ", drivingDistanceFactor: " + drivingDistanceFactor);
