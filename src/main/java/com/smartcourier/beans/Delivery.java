@@ -41,7 +41,7 @@ public class Delivery implements Serializable {
 	private Double latitude;
 	private Double longitude;
     private Integer type;
-
+    private String address;
 	/*private Integer type;//There are 4 types of deliveries: Type0, Type1, Type 2 and Type 3 as described in section 3.6.
 	private Double lat;
 	private Double lng;
@@ -110,6 +110,13 @@ public class Delivery implements Serializable {
 		this.id = id;
 	}   
 		
+	
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
 	public String getName() {
 		return name;
 	}
