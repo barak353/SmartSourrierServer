@@ -36,15 +36,29 @@ public class Delivery implements Serializable {
 	@GeneratedValue 
 	//DB's and algorithm's details
 	private Long id;
-	private String name;
+	//private String name;
 	private Integer isUrgent;
 	private Double latitude;
 	private Double longitude;
     private Integer type;
     private String address;
+    private String phone;
+	
+   
+    //updates in report
+    private String claimant;
+    private String entrance;
+    private String floor;
+    private String box;
+    
 	/*private Integer type;//There are 4 types of deliveries: Type0, Type1, Type 2 and Type 3 as described in section 3.6.
 	private Double lat;
 	private Double lng;
+	private String date;
+	    private String duedate;
+
+	private String pasted_on_door;
+	private String reveiwer_name;
 	private String subarea;
 	private String address;
 	private String area;
@@ -58,7 +72,6 @@ public class Delivery implements Serializable {
 	private String date;	
 	private String not_found;
 	private String reveiwer_name;
-	private String floor;
 	private String entrance;
 	private String num_of_floor;
 	private String private_house;
@@ -111,18 +124,48 @@ public class Delivery implements Serializable {
 	}   
 		
 	
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	public String getClaimant() {
+		return claimant;
+	}
+	public void setClaimant(String claimant) {
+		this.claimant = claimant;
+	}
+	public String getEntrance() {
+		return entrance;
+	}
+	public void setEntrance(String entrance) {
+		this.entrance = entrance;
+	}
+	public String getFloor() {
+		return floor;
+	}
+	public void setFloor(String floor) {
+		this.floor = floor;
+	}
+	public String getBox() {
+		return box;
+	}
+	public void setBox(String box) {
+		this.box = box;
+	}
 	public String getAddress() {
 		return address;
 	}
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public String getName() {
+	/*public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
-	}
+	}*/
 	public Region getRegion() {
 		return region;
 	}
