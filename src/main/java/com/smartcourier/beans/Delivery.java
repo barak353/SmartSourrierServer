@@ -52,8 +52,6 @@ public class Delivery implements Serializable {
     private String box;
     
 	/*private Integer type;//There are 4 types of deliveries: Type0, Type1, Type 2 and Type 3 as described in section 3.6.
-	private Double lat;
-	private Double lng;
 	private String date;
 	    private String duedate;
 
