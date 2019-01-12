@@ -114,10 +114,16 @@ public class DeliveryController {
 		Delivery currentDelivery = deliveryDao.findOne(deliveryId);
 		if(currentDelivery != null){
 			currentDelivery.setType(delivery.getType());
-			currentDelivery.setName(delivery.getName());
+			currentDelivery.setAddress(delivery.getAddress());
 			currentDelivery.setLatitude(delivery.getLatitude());
 			currentDelivery.setLongitude(delivery.getLongitude());
 			currentDelivery.setIsUrgent(delivery.getIsUrgent());
+			currentDelivery.setPhone(delivery.getPhone());
+			currentDelivery.setClaimant(delivery.getClaimant());
+			currentDelivery.setEntrance(delivery.getEntrance());
+			currentDelivery.setBox(delivery.getBox());
+			currentDelivery.setFloor(delivery.getFloor());
+
 			return deliveryDao.save(currentDelivery);
 		} else{
 			return null;//Courier is not exist.
