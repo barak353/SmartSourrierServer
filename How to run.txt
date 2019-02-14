@@ -1,0 +1,11 @@
+How to run server:
+
+1. Install Eclipse Neon.3
+
+2. Import server project as gradle to eclipse after downloading it from SourceTree to your pc.
+
+3. Compile and run.
+
+4. To build server project you should build project with gradle (download gradle and add his bin directory to your path enviroment variable)
+
+Noe: You should search in the server project for: My-Key and then insert a key for google's geocoding api.
