@@ -2,10 +2,14 @@ How to run server:
 
 1. Install Eclipse Neon.3
 
-2. Import server project as gradle to eclipse after downloading it from SourceTree to your pc.
+2. Import server project as gradle to eclipse after downloading it from GitHub to your pc.
 
-3. Compile and run. The server is now running on ip: localhost, on port 8080.
+3. To build server project you should build project with gradle (download gradle and add his bin directory to your path enviroment variable).
 
-4. To build server project you should build project with gradle (download gradle and add his bin directory to your path enviroment variable)
+4. To create a Jar file: gradle clean and then gradle fatJar. The server is now running on ip: localhost, on port 8080.
+
+5. To run the created Jar file: java -jar SmartCourierServer.jar
+
 
 Noe: You should search in the server project for: My-Key and then insert a key for google's geocoding api.
+Be sure that you define the main class of SmartCourier project inside the edit configuration in Eclipse.
